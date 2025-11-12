@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RatingApp.Views.MainPage"
+             Title="">
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="40" Spacing="30" VerticalOptions="Center">
+            
+            <!-- Header -->
+            <Label Text="Рейтинг букмекеров" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" 
+                   TextColor="#FF3E3EBD"/>
+            
+            <!-- Welcome Message -->
+            <Label Text="Welcome to the rating management application!" 
+                   FontSize="16" 
+                   HorizontalOptions="Center" 
+                   HorizontalTextAlignment="Center"
+                   TextColor="Gray"/>
+            
+            <!-- Buttons -->
+            <VerticalStackLayout Spacing="15">
+                
+                <Button Text="Рейтинги" 
+                        Command="{Binding ShowRatingCommand}"
+                        BackgroundColor="#FF3E3EBD"
+                        TextColor="White"
+                        FontSize="18"
+                        HeightRequest="60"
+                        CornerRadius="10"/>
+                
+                <Button Text="Выход" 
+                        Command="{Binding ExitAppCommand}"
+                        BackgroundColor="#FF3E3EBD"
+                        TextColor="White"
+                        FontSize="18"
+                        HeightRequest="60"
+                        CornerRadius="10"/>
+                    
+            </VerticalStackLayout>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

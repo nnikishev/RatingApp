@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RatingApp.Views.RatingDetailPage"
+             Title="Детали">
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            
+            <!-- Изображение -->
+            <Image Source="{Binding Item.ImagePath}" 
+                   HeightRequest="200" 
+                   Aspect="AspectFill"
+                   HorizontalOptions="Center"/>
+            
+            <!-- Поля для редактирования -->
+            <Frame BackgroundColor="LightGray" Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="10">
+                    
+                    <Label Text="Название:" FontAttributes="Bold"/>
+                    <Entry Text="{Binding Item.Name}" Placeholder="Введите название"/>
+                    
+                    <Label Text="Категория:" FontAttributes="Bold"/>
+                    <Picker SelectedItem="{Binding Item.Category}">
+                        <Picker.Items>
+                            <x:String>Электроника</x:String>
+                            <x:String>Услуги</x:String>
+                            <x:String>Общее</x:String>
+                            <x:String>Еда</x:String>
+                            <x:String>Развлечения</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    
+                    <Label Text="Описание:" FontAttributes="Bold"/>
+                    <Editor Text="{Binding Item.Description}" 
+                            HeightRequest="80" 
+                            Placeholder="Введите описание"/>
+                    
+                    <Label Text="Рейтинг:" FontAttributes="Bold"/>
+                    <Slider Value="{Binding Item.Rating}" 
+                            Minimum="1" 
+                            Maximum="5" 
+                            ThumbColor="Blue"
+                            MinimumTrackColor="Blue"/>
+                    <Label Text="{Binding Item.Rating, StringFormat='Текущий рейтинг: {0}'}" 
+                           HorizontalOptions="Center"/>
+                    
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Кнопки действий -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0" 
+                        Text="💾 Сохранить" 
+                        Command="{Binding SaveItemCommand}"
+                        BackgroundColor="Green"
+                        TextColor="White"/>
+                
+                <Button Grid.Column="1" 
+                        Text="🗑️ Удалить" 
+                        Command="{Binding DeleteItemCommand}"
+                        BackgroundColor="Red"
+                        TextColor="White"/>
+            </Grid>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

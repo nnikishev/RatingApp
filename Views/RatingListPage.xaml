@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:RatingApp.Converters"
+             x:Class="RatingApp.Views.RatingListPage"
+             Title="Ratings List">
+    
+    <ContentPage.Resources>
+        <converters:RatingVisibleConverter x:Key="RatingVisibleConverter"/>
+    </ContentPage.Resources>
+    
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header with Create Button -->
+        <Frame Grid.Row="0" 
+               BackgroundColor="#FF3E3EB" 
+               CornerRadius="0" 
+               Padding="15"
+               HasShadow="True">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Grid.Column="0" 
+                       Text="My Ratings" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="White"
+                       VerticalOptions="Center"/>
+                
+                <Button Grid.Column="1" 
+                        Text="➕" 
+                        Command="{Binding CreateNewItemCommand}"
+                        BackgroundColor="White"
+                        TextColor="#FF3E3EB"
+                        FontSize="14"
+                        HeightRequest="40"
+                        CornerRadius="20"/>
+            </Grid>
+        </Frame>
+        
+        <!-- List -->
+        <RefreshView Grid.Row="1"
+                     Command="{Binding LoadItemsCommand}"
+                     IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding Items}"
+                            SelectionMode="None"
+                            EmptyView="No items found. Tap '+' to create your first rating!">
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="15" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                            
+                            <!-- Item Info -->
+                            <VerticalStackLayout Grid.Column="0" Grid.RowSpan="2" Spacing="4">
+                                <Label Text="{Binding Name}" 
+                                       FontSize="16" 
+                                       FontAttributes="Bold" 
+                                       TextColor="#212529"/>
+                                <Label Text="{Binding Category}" 
+                                       FontSize="12" 
+                                       TextColor="#6C757D"/>
+                                <Label Text="{Binding Description}" 
+                                       FontSize="12" 
+                                       TextColor="#495057"
+                                       MaxLines="2"
+                                       LineBreakMode="TailTruncation"/>
+                            </VerticalStackLayout>
+                            
+                            <!-- Rating Stars -->
+                            <HorizontalStackLayout Grid.Column="1" Grid.Row="0" Spacing="2" HorizontalOptions="End">
+                                <Label Text="⭐" FontSize="12" IsVisible="{Binding Rating, Converter={StaticResource RatingVisibleConverter}, ConverterParameter=1}"/>
+                                <Label Text="⭐" FontSize="12" IsVisible="{Binding Rating, Converter={StaticResource RatingVisibleConverter}, ConverterParameter=2}"/>
+                                <Label Text="⭐" FontSize="12" IsVisible="{Binding Rating, Converter={StaticResource RatingVisibleConverter}, ConverterParameter=3}"/>
+                                <Label Text="⭐" FontSize="12" IsVisible="{Binding Rating, Converter={StaticResource RatingVisibleConverter}, ConverterParameter=4}"/>
+                                <Label Text="⭐" FontSize="12" IsVisible="{Binding Rating, Converter={StaticResource RatingVisibleConverter}, ConverterParameter=5}"/>
+                                <Label Text="{Binding Rating}" 
+                                       FontSize="12" 
+                                       TextColor="#FF3E3EB"
+                                       FontAttributes="Bold"/>
+                            </HorizontalStackLayout>
+                            
+                            <!-- Action Buttons -->
+                            <HorizontalStackLayout Grid.Column="1" Grid.Row="1" Spacing="8" HorizontalOptions="End">
+                                <Button Text="✏️" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditItemCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent"
+                                        TextColor="#6C757D"
+                                        FontSize="12"
+                                        WidthRequest="30"
+                                        HeightRequest="30"/>
+                                
+                                <Button Text="🗑️" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteItemCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent"
+                                        TextColor="#DC3545"
+                                        FontSize="12"
+                                        WidthRequest="30"
+                                        HeightRequest="30"/>
+                            </HorizontalStackLayout>
+                            
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                
+            </CollectionView>
+        </RefreshView>
+        
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="0" Grid.RowSpan="3"
+                          IsVisible="{Binding IsBusy}"
+                          IsRunning="{Binding IsBusy}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center"
+                          Color="#FF3E3EB"/>
+        
+    </Grid>
+    
+</ContentPage>
