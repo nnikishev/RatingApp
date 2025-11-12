@@ -108,36 +108,6 @@ namespace RatingApp.ViewModels
         }
 
         [RelayCommand]
-        private async Task AddItemAsync()
-        {
-            System.Diagnostics.Debug.WriteLine("COMMAND: AddItemAsync started");
-            try
-            {
-                var newItem = new RatingItem
-                {
-                    Name = $"New Item {DateTime.Now:HHmmss}",
-                    Description = "Description of new item",
-                    Rating = 3,
-                    Category = "General",
-                    CreatedDate = DateTime.Now
-                };
-                
-                System.Diagnostics.Debug.WriteLine("VIEWMODEL: Saving new item to database...");
-                await _ratingService.SaveItemAsync(newItem);
-                System.Diagnostics.Debug.WriteLine("VIEWMODEL: Item saved to database");
-                
-                await LoadItemsAsync();
-                await Application.Current.MainPage.DisplayAlert("Success", "Item added to database", "OK");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"VIEWMODEL_ERROR: AddItemAsync failed - {ex}");
-                await Application.Current.MainPage.DisplayAlert("Error", 
-                    $"Failed to add item: {ex.Message}", "OK");
-            }
-        }
-
-        [RelayCommand]
         private async Task DeleteItemAsync(RatingItem item)
         {
             System.Diagnostics.Debug.WriteLine("COMMAND: DeleteItemAsync started");

@@ -6,7 +6,16 @@
     
     <ScrollView>
         <VerticalStackLayout Padding="40" Spacing="30" VerticalOptions="Center">
-            
+            <!-- Add to the header section -->
+            <Button Grid.Column="1" 
+                Text="🚪" 
+                Command="{Binding LogoutCommand}"
+                BackgroundColor="Transparent"
+                TextColor="White"
+                FontSize="16"
+                WidthRequest="40"
+                HeightRequest="40"/>
+
             <!-- Header -->
             <Label Text="Рейтинг букмекеров" 
                    FontSize="28" 
