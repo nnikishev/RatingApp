@@ -1,55 +1,49 @@
 using RatingApp.ViewModels;
 using RatingApp.Views;
 using RatingApp.Services;
-using SQLitePCL;
 
 namespace RatingApp
 {
     public partial class App : Application
     {
-        public App(IRatingService ratingService)
+        private readonly IAuthService _authService;
+        private readonly IRatingService _ratingService;
+
+        public App(IAuthService authService, IRatingService ratingService)
         {
-            // Initialize SQLite
-            InitializeSQLite();
+            _authService = authService;
+            _ratingService = ratingService;
             
             InitializeComponent();
-
-            // Global exception handlers
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                var exception = (Exception)args.ExceptionObject;
-                System.Diagnostics.Debug.WriteLine($"UNHANDLED_EXCEPTION: {exception}");
-            };
-
-            try
-            {
-                var mainPage = new MainPage(ratingService);
-                MainPage = new NavigationPage(mainPage);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"APP_INIT_ERROR: {ex}");
-                MainPage = new ContentPage
-                {
-                    Content = new Label { Text = "Application startup error" }
-                };
-            }
+            InitializeApp();
         }
 
-        private void InitializeSQLite()
+        private async void InitializeApp()
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("SQLITE_INIT: Starting SQLite initialization");
+                // Check if user is already authenticated
+                var isAuthenticated = await _authService.ValidateTokenAsync();
                 
-                // Initialize SQLite
-                Batteries_V2.Init();
-                
-                System.Diagnostics.Debug.WriteLine("SQLITE_INIT: SQLite initialized successfully");
+                if (isAuthenticated)
+                {
+                    // User is authenticated, go to main app
+                    var authInfo = _authService.GetAuthInfo();
+                    System.Diagnostics.Debug.WriteLine($"APP_START: User {authInfo.Username} is authenticated");
+                    MainPage = new NavigationPage(new MainPage(_ratingService, _authService));
+                }
+                else
+                {
+                    // User needs to login
+                    System.Diagnostics.Debug.WriteLine("APP_START: User not authenticated, showing login");
+                    MainPage = new LoginPage(_authService, _ratingService);
+                }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"SQLITE_INIT_ERROR: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"APP_INIT_ERROR: {ex.Message}");
+                // Fallback to login page
+                MainPage = new LoginPage(_authService, _ratingService);
             }
         }
     }

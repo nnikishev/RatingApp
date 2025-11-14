@@ -46,14 +46,14 @@ namespace RatingApp.ViewModels
                 ImagePath = item.ImagePath
             };
             IsEditing = true;
-            Title = "Edit Item";
+            Title = "Изменить набор";
         }
 
         public void SetItemForCreate()
         {
             Item = new RatingItem();
             IsEditing = false;
-            Title = "Create New Item";
+            Title = "Создать новый набор";
         }
 
         [RelayCommand]

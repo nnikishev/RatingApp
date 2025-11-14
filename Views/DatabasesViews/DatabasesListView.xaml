@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="RatingApp.Views.DatabasesViews.DatabasesListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+    Title="Базы данных"
+    BackgroundColor="{StaticResource DBL.PageBgColor}"
+    Padding="20,16">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Палитра -->
+            <Color x:Key="DBL.PageBgColor">#F4F6FB</Color>
+            <Color x:Key="DBL.CardBg">#FFFFFF</Color>
+            <Color x:Key="DBL.PrimaryText">#111827</Color>
+            <Color x:Key="DBL.SecondaryText">#6B7280</Color>
+            <Color x:Key="DBL.MutedText">#94A3B8</Color>
+            <Color x:Key="DBL.Divider">#E5E7EB</Color>
+
+            <Color x:Key="DBL.ChipBg">#F3F4F6</Color>
+            <Color x:Key="DBL.ChipText">#4B5563</Color>
+
+            <Color x:Key="DBL.GreenBg">#DDF7EA</Color>
+            <Color x:Key="DBL.GreenText">#1F9D6A</Color>
+            <Color x:Key="DBL.RedBg">#FEE8E8</Color>
+            <Color x:Key="DBL.RedText">#D64545</Color>
+
+            <Color x:Key="DBL.FabStart">#8459FF</Color>
+            <Color x:Key="DBL.FabEnd">#6A31FF</Color>
+
+            <!-- Стили текста -->
+            <Style x:Key="DBL.H1" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.PrimaryText}" />
+                <Setter Property="FontSize" Value="32" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="DBL.Subtitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.SecondaryText}" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style x:Key="DBL.CardTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.PrimaryText}" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="DBL.CardSubtitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.SecondaryText}" />
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+
+            <Style x:Key="DBL.InfoText" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.MutedText}" />
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+
+            <!-- Плашки-статусы -->
+            <Style x:Key="DBL.PillBase" TargetType="Border">
+                <Setter Property="StrokeThickness" Value="0" />
+                <Setter Property="Padding" Value="10,6" />
+                <Setter Property="StrokeShape">
+                    <Setter.Value>
+                        <shapes:RoundRectangle CornerRadius="999" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="DBL.PillConnected" TargetType="Border" BasedOn="{StaticResource DBL.PillBase}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DBL.GreenBg}" />
+            </Style>
+
+            <Style x:Key="DBL.PillDisconnected" TargetType="Border" BasedOn="{StaticResource DBL.PillBase}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DBL.RedBg}" />
+            </Style>
+
+            <Style x:Key="DBL.PillTextConnected" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.GreenText}" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="DBL.PillTextDisconnected" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.RedText}" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <!-- Чипы -->
+            <Style x:Key="DBL.Chip" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{StaticResource DBL.ChipBg}" />
+                <Setter Property="Stroke" Value="#E5E7EB" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="Padding" Value="10,6" />
+                <Setter Property="StrokeShape">
+                    <Setter.Value>
+                        <shapes:RoundRectangle CornerRadius="10" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="DBL.ChipTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DBL.ChipText}" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+
+            <!-- Карточка -->
+            <Style x:Key="DBL.CardFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource DBL.CardBg}" />
+                <Setter Property="CornerRadius" Value="16" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="Padding" Value="16" />
+                <Setter Property="Margin" Value="0,10" />
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="#1A000000" Offset="0,4" Radius="12" Opacity="0.35" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!-- Абсолют для FAB -->
+    <AbsoluteLayout>
+
+        <!-- Контент -->
+        <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    AbsoluteLayout.LayoutFlags="All">
+            <VerticalStackLayout Spacing="16">
+
+                <!-- Навбар -->
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,0,0,8">
+                    <Label Text="←" FontSize="18" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="Назад в меню" FontSize="14" TextColor="{StaticResource DBL.SecondaryText}" VerticalOptions="Center" />
+                </Grid>
+
+                <Label Text="Базы данных" Style="{StaticResource DBL.H1}" />
+                <Label Text="Управление подключениями" Style="{StaticResource DBL.Subtitle}" />
+
+                <!-- production_db -->
+                <Frame Style="{StaticResource DBL.CardFrame}">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          ColumnSpacing="8" RowSpacing="10">
+                        <Label Grid.Row="0" Grid.Column="0" Text="production_db" Style="{StaticResource DBL.CardTitle}" />
+                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
+
+                        <Label Grid.Row="1" Grid.ColumnSpan="2"
+                               Text="База данных производственных данных"
+                               Style="{StaticResource DBL.CardSubtitle}" />
+
+                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
+                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label Text="🗄" FontSize="12" VerticalTextAlignment="Center" />
+                                    <Label Text="PostgreSQL" Style="{StaticResource DBL.ChipTextStyle}" />
+                                </HorizontalStackLayout>
+                            </Border>
+
+                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
+                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
+                                <Label Text="192.168.1.10:5432" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Spacing="6">
+                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
+                                <Label Text="2024-10-15" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+                        </FlexLayout>
+
+                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
+                            <Border Style="{StaticResource DBL.PillConnected}">
+                                <Label Text="Подключено" Style="{StaticResource DBL.PillTextConnected}" />
+                            </Border>
+                            <Grid Grid.Column="1" />
+                            <Label Grid.Column="2" Text="24 таблиц" Style="{StaticResource DBL.InfoText}" />
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <!-- geology_db -->
+                <Frame Style="{StaticResource DBL.CardFrame}">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          ColumnSpacing="8" RowSpacing="10">
+                        <Label Grid.Row="0" Grid.Column="0" Text="geology_db" Style="{StaticResource DBL.CardTitle}" />
+                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
+
+                        <Label Grid.Row="1" Grid.ColumnSpan="2"
+                               Text="Геологическая информация"
+                               Style="{StaticResource DBL.CardSubtitle}" />
+
+                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
+                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label Text="🗄" FontSize="12" />
+                                    <Label Text="PostgreSQL" Style="{StaticResource DBL.ChipTextStyle}" />
+                                </HorizontalStackLayout>
+                            </Border>
+
+                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
+                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
+                                <Label Text="192.168.1.11:5432" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Spacing="6">
+                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
+                                <Label Text="2024-10-12" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+                        </FlexLayout>
+
+                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
+                            <Border Style="{StaticResource DBL.PillConnected}">
+                                <Label Text="Подключено" Style="{StaticResource DBL.PillTextConnected}" />
+                            </Border>
+                            <Grid Grid.Column="1" />
+                            <Label Grid.Column="2" Text="18 таблиц" Style="{StaticResource DBL.InfoText}" />
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <!-- equipment_db (отключено) -->
+                <Frame Style="{StaticResource DBL.CardFrame}">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          ColumnSpacing="8" RowSpacing="10">
+                        <Label Grid.Row="0" Grid.Column="0" Text="equipment_db" Style="{StaticResource DBL.CardTitle}" />
+                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
+
+                        <Label Grid.Row="1" Grid.ColumnSpan="2"
+                               Text="База данных оборудования"
+                               Style="{StaticResource DBL.CardSubtitle}" />
+
+                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
+                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label Text="🗄" FontSize="12" />
+                                    <Label Text="MySQL" Style="{StaticResource DBL.ChipTextStyle}" />
+                                </HorizontalStackLayout>
+                            </Border>
+
+                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
+                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
+                                <Label Text="192.168.1.12:3306" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Spacing="6">
+                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
+                                <Label Text="2024-10-08" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+                        </FlexLayout>
+
+                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
+                            <Border Style="{StaticResource DBL.PillDisconnected}">
+                                <Label Text="Отключено" Style="{StaticResource DBL.PillTextDisconnected}" />
+                            </Border>
+                            <Grid Grid.Column="1" />
+                            <Label Grid.Column="2" Text="12 таблиц" Style="{StaticResource DBL.InfoText}" />
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <!-- analytics_db -->
+                <Frame Style="{StaticResource DBL.CardFrame}">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          ColumnSpacing="8" RowSpacing="10">
+                        <Label Grid.Row="0" Grid.Column="0" Text="analytics_db" Style="{StaticResource DBL.CardTitle}" />
+                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
+
+                        <Label Grid.Row="1" Grid.ColumnSpan="2"
+                               Text="Аналитические данные и отчеты"
+                               Style="{StaticResource DBL.CardSubtitle}" />
+
+                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
+                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label Text="🗄" FontSize="12" />
+                                    <Label Text="PostgreSQL" Style="{StaticResource DBL.ChipTextStyle}" />
+                                </HorizontalStackLayout>
+                            </Border>
+
+                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
+                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
+                                <Label Text="192.168.1.13:5432" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Spacing="6">
+                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
+                                <Label Text="2024-09-28" Style="{StaticResource DBL.InfoText}" />
+                            </HorizontalStackLayout>
+                        </FlexLayout>
+
+                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
+                            <Border Style="{StaticResource DBL.PillConnected}">
+                                <Label Text="Подключено" Style="{StaticResource DBL.PillTextConnected}" />
+                            </Border>
+                            <Grid Grid.Column="1" />
+                            <Label Grid.Column="2" Text="31 таблиц" Style="{StaticResource DBL.InfoText}" />
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <BoxView HeightRequest="24" Opacity="0" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- FAB "+" (в правом верхнем углу, как в макете) -->
+        <Border
+            AbsoluteLayout.LayoutBounds="1,0,56,56"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <shapes:RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{StaticResource DBL.FabStart}" Offset="0.0" />
+                    <GradientStop Color="{StaticResource DBL.FabEnd}" Offset="1.0" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Shadow>
+                <Shadow Brush="#33000000" Offset="0,6" Radius="16" Opacity="0.6" />
+            </Border.Shadow>
+            <Grid>
+                <Label Text="+" TextColor="White" FontSize="28" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+    </AbsoluteLayout>
+</ContentPage>

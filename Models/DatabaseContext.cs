@@ -66,47 +66,6 @@ namespace RatingApp.Models
             {
                 var count = await _database.Table<RatingItem>().CountAsync();
                 System.Diagnostics.Debug.WriteLine($"DATABASE_SEED: Current item count: {count}");
-
-                if (count == 0)
-                {
-                    System.Diagnostics.Debug.WriteLine("DATABASE_SEED: Adding sample data");
-                    
-                    var sampleItems = new List<RatingItem>
-                    {
-                        new() 
-                        { 
-                            Name = "Excellent Laptop", 
-                            Description = "High performance laptop with great battery life", 
-                            Rating = 5, 
-                            Category = "Electronics",
-                            CreatedDate = DateTime.Now
-                        },
-                        new() 
-                        { 
-                            Name = "Fast Delivery Service", 
-                            Description = "Quick and reliable delivery service", 
-                            Rating = 4, 
-                            Category = "Services",
-                            CreatedDate = DateTime.Now
-                        },
-                        new() 
-                        { 
-                            Name = "Good Restaurant", 
-                            Description = "Tasty food and good atmosphere", 
-                            Rating = 4, 
-                            Category = "Food",
-                            CreatedDate = DateTime.Now
-                        }
-                    };
-                    
-                    foreach (var item in sampleItems)
-                    {
-                        await _database.InsertAsync(item);
-                        System.Diagnostics.Debug.WriteLine($"DATABASE_SEED: Added item - {item.Name}");
-                    }
-                    
-                    System.Diagnostics.Debug.WriteLine("DATABASE_SEED: Sample data added successfully");
-                }
             }
             catch (Exception ex)
             {

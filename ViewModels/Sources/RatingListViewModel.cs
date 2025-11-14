@@ -48,8 +48,8 @@ namespace RatingApp.ViewModels
                 }
 
                 // Fallback to mock data
-                System.Diagnostics.Debug.WriteLine("DATABASE_FALLBACK: Using mock data");
-                LoadMockData();
+                // System.Diagnostics.Debug.WriteLine("DATABASE_FALLBACK: Using mock data");
+                // LoadMockData();
                 
                 if (!isDbReady)
                 {
@@ -60,7 +60,6 @@ namespace RatingApp.ViewModels
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"LOAD_ITEMS_ERROR: {ex.Message}");
-                LoadMockData();
                 await Application.Current.MainPage.DisplayAlert("Info", 
                     "Using sample data", "OK");
             }
@@ -70,23 +69,6 @@ namespace RatingApp.ViewModels
             }
         }
 
-        private void LoadMockData()
-        {
-            Items.Clear();
-            var mockItems = new List<RatingItem>
-    {
-        new() { Id = 1, Name = "Sample Product 1", Description = "High quality item", Rating = 5, Category = "Electronics", CreatedDate = DateTime.Now },
-        new() { Id = 2, Name = "Sample Service 1", Description = "Good service quality", Rating = 4, Category = "Services", CreatedDate = DateTime.Now },
-        new() { Id = 3, Name = "Sample Item 1", Description = "Average quality", Rating = 3, Category = "General", CreatedDate = DateTime.Now }
-    };
-
-            foreach (var item in mockItems)
-            {
-                Items.Add(item);
-            }
-
-            System.Diagnostics.Debug.WriteLine("MOCK_DATA: Loaded 3 sample items");
-        }
 
         [RelayCommand]
         private async Task ItemTappedAsync(RatingItem item)
@@ -104,36 +86,6 @@ namespace RatingApp.ViewModels
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"VIEWMODEL_ERROR: ItemTappedAsync failed - {ex}");
-            }
-        }
-
-        [RelayCommand]
-        private async Task AddItemAsync()
-        {
-            System.Diagnostics.Debug.WriteLine("COMMAND: AddItemAsync started");
-            try
-            {
-                var newItem = new RatingItem
-                {
-                    Name = $"New Item {DateTime.Now:HHmmss}",
-                    Description = "Description of new item",
-                    Rating = 3,
-                    Category = "General",
-                    CreatedDate = DateTime.Now
-                };
-                
-                System.Diagnostics.Debug.WriteLine("VIEWMODEL: Saving new item to database...");
-                await _ratingService.SaveItemAsync(newItem);
-                System.Diagnostics.Debug.WriteLine("VIEWMODEL: Item saved to database");
-                
-                await LoadItemsAsync();
-                await Application.Current.MainPage.DisplayAlert("Success", "Item added to database", "OK");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"VIEWMODEL_ERROR: AddItemAsync failed - {ex}");
-                await Application.Current.MainPage.DisplayAlert("Error", 
-                    $"Failed to add item: {ex.Message}", "OK");
             }
         }
 
