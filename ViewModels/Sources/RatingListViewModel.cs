@@ -19,10 +19,11 @@ namespace RatingApp.ViewModels
             Title = "Ratings List";
             System.Diagnostics.Debug.WriteLine("VIEWMODEL: RatingListViewModel created");
         }
-
+        
         [RelayCommand]
         private async Task LoadItemsAsync()
         {
+
             try
             {
                 IsBusy = true;
@@ -98,7 +99,7 @@ namespace RatingApp.ViewModels
                 bool answer = await Application.Current.MainPage.DisplayAlert(
                     "Confirmation",
                     $"Delete '{item.Name}' from database?",
-                    "Yes", "No");
+                    "Yes", "No"); 
 
                 if (answer)
                 {

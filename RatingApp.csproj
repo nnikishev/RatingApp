@@ -38,11 +38,20 @@
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.android" Version="2.1.7" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.7" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Npgsql" Version="7.0.4" />
+    <PackageReference Include="MySql.Data" Version="8.1.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <MauiImage Include="Resources\Icons\profile_icon.png" />
     <MauiImage Include="Resources\Icons\logout_icon.png" />
+    <MauiImage Include="Resources\Icons\delete.png" />
+    <MauiImage Include="Resources\Icons\edit.png" />
+    <MauiImage Include="Resources\Icons\left_arrow.png" />
+    <MauiImage Include="Resources\Icons\database_ok.png" />
+    <MauiImage Include="Resources\Icons\database_error.png" />
+    <MauiImage Include="Resources\Icons\add.png" />
     <MauiImage Include="Resources\Backgrounds\login_background.jpg" />
     <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.69" Color="#512BD4" />
   </ItemGroup>

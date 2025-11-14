@@ -64,13 +64,13 @@
                 <!-- Buttons -->
                 <VerticalStackLayout Spacing="15">
 
-                    <Button Text="Планшеты" 
+                    <!-- <Button Text="Планшеты" 
                             Command="{Binding ShowRatingCommand}"
                             BackgroundColor="#FF3E3EBD"
                             TextColor="White"
                             FontSize="18"
                             HeightRequest="60"
-                            CornerRadius="10"/>
+                            CornerRadius="10"/> -->
                     
                     <Button Text="Визуализации" 
                             Command="{Binding ExitAppCommand}"
@@ -90,7 +90,7 @@
                             CornerRadius="10"/>
                     
                     <Button Text="Базы данных" 
-                            Command="{Binding DatabasesListAsyncCommand}"
+                            Command="{Binding DatabasesListCommand}"
                             BackgroundColor="#FF3E3EBD"
                             TextColor="White"
                             FontSize="18"

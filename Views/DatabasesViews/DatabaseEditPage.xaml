@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:RatingApp.Models"
+             xmlns:converters="clr-namespace:RatingApp.Converters"
+             x:Class="RatingApp.Views.DatabaseEditPage"
+             Title="{Binding IsEditMode, Converter={StaticResource BoolToEditTitleConverter}}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToEditTitleConverter x:Key="BoolToEditTitleConverter"/>
+            <converters:BoolToSaveButtonConverter x:Key="BoolToSaveButtonConverter"/>
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+            <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+            
+            <x:String x:Key="CreateTitle">Новая база данных</x:String>
+            <x:String x:Key="EditTitle">Редактирование базы данных</x:String>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Заголовок -->
+            <Label Text="Заполните параметры подключения" 
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   TextColor="Gray"/>
+
+            <!-- Хост и Порт -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                    <Label Text="Хост" FontSize="14" FontAttributes="Bold"/>
+                    <Entry Text="{Binding Host}" 
+                           Placeholder="192.168.1.10"
+                           BackgroundColor="#F5F5F5"
+                           HeightRequest="45"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="5">
+                    <Label Text="Порт" FontSize="14" FontAttributes="Bold"/>
+                    <Entry Text="{Binding Port}" 
+                           Placeholder="5432"
+                           BackgroundColor="#F5F5F5"
+                           HeightRequest="45"
+                           Keyboard="Numeric"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Пользователь и Пароль -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                    <Label Text="Пользователь" FontSize="14" FontAttributes="Bold"/>
+                    <Entry Text="{Binding User}" 
+                           Placeholder="admin"
+                           BackgroundColor="#F5F5F5"
+                           HeightRequest="45"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="5">
+                    <Label Text="Пароль" FontSize="14" FontAttributes="Bold"/>
+                    <Entry Text="{Binding Password}" 
+                           Placeholder="••••••••"
+                           BackgroundColor="#F5F5F5"
+                           HeightRequest="45"
+                           IsPassword="True"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Имя БД и Тип БД -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                    <Label Text="Имя БД" FontSize="14" FontAttributes="Bold"/>
+                    <Entry Text="{Binding DatabaseName}" 
+                           Placeholder="production_db"
+                           BackgroundColor="#F5F5F5"
+                           HeightRequest="45"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="5">
+                    <Label Text="Тип БД" FontSize="14" FontAttributes="Bold"/>
+                    <Picker ItemsSource="{Binding DatabaseTypes}"
+                            SelectedItem="{Binding SelectedType}"
+                            BackgroundColor="#F5F5F5"
+                            HeightRequest="45">
+                        <Picker.ItemDisplayBinding>
+                            <Binding Path=".">
+                                <Binding.Converter>
+                                    <converters:EnumDescriptionConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Тестирование подключения -->
+            <Frame BackgroundColor="#F8F9FA" CornerRadius="10" Padding="15">
+                <HorizontalStackLayout Spacing="15">
+                    <CheckBox IsChecked="{Binding IsConnectionSuccessful}"
+                              IsEnabled="False"
+                              Color="#28A745"
+                              VerticalOptions="Center"/>
+                    
+                    <Label Text="Протестировать подключение" 
+                           FontSize="14"
+                           VerticalOptions="Center"/>
+                    
+                    <Button Text="Тестировать" 
+                            Command="{Binding TestConnectionCommand}"
+                            IsEnabled="{Binding IsTesting, Converter={StaticResource InverseBoolConverter}}"
+                            BackgroundColor="{Binding IsConnectionSuccessful, Converter={StaticResource BoolToColorConverter}}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            HorizontalOptions="EndAndExpand"/>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Описание -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Описание" FontSize="14" FontAttributes="Bold"/>
+                <Editor Text="{Binding Description}" 
+                        Placeholder="Описание базы данных"
+                        BackgroundColor="#F5F5F5"
+                        AutoSize="TextChanges"
+                        HeightRequest="80"/>
+            </VerticalStackLayout>
+
+            <!-- Кнопка Создать/Сохранить -->
+            <Button Text="{Binding IsEditMode, Converter={StaticResource BoolToSaveButtonConverter}}"
+                    Command="{Binding SaveDatabaseCommand}"
+                    BackgroundColor="#FF3E3EBD"
+                    TextColor="White"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    CornerRadius="10"
+                    Margin="0,20,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

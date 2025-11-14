@@ -1,14 +1,15 @@
-using RatingApp.ViewModels.DatabasesViewModels;
+using RatingApp.ViewModels;
+using RatingApp.Models;
 using RatingApp.Services;
 
-namespace RatingApp.Views.DatabasesViews
+namespace RatingApp.Views
 {
     public partial class DatabasesListPage : ContentPage
     {
-        public DatabasesListPage(IAuthService authService)
+        public DatabasesListPage(DatabaseContext databaseContext, IRatingService ratingService)
         {
             InitializeComponent();
-            BindingContext = new DatabasesListViewModel(authService);
+            BindingContext = new DatabasesListViewModel(databaseContext, ratingService);
         }
     }
 }
