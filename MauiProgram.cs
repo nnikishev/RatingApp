@@ -32,6 +32,7 @@ namespace RatingApp
                 builder.Services.AddTransient<RatingListViewModel>();
                 builder.Services.AddTransient<RatingFormViewModel>();
                 builder.Services.AddTransient<RatingDetailViewModel>();
+                builder.Services.AddTransient<ViewModels.DatabasesViewModels.DatabasesListViewModel>();
 
                 // Register Views
                 builder.Services.AddTransient<MainPage>();
@@ -39,7 +40,8 @@ namespace RatingApp
                 builder.Services.AddTransient<RatingListPage>();
                 builder.Services.AddTransient<RatingDetailPage>();
                 builder.Services.AddTransient<RatingFormPage>();
-
+                builder.Services.AddTransient<Views.DatabasesViews.DatabasesListPage>();
+                
                 return builder.Build();
             }
         }

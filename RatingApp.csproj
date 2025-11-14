@@ -10,7 +10,7 @@
     
     <!-- Android Settings -->
     <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net9.0-android'">21.0</SupportedOSPlatformVersion>
-    <ApplicationId>com.companyname.ratingapp</ApplicationId>
+    <ApplicationId>Analytics</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     
@@ -31,6 +31,7 @@
 </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.111" />
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
     <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.7" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.7" />
@@ -40,6 +41,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <MauiImage Include="Resources\Icons\profile_icon.png" />
+    <MauiImage Include="Resources\Icons\logout_icon.png" />
+    <MauiImage Include="Resources\Backgrounds\login_background.jpg" />
     <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.69" Color="#512BD4" />
   </ItemGroup>
 

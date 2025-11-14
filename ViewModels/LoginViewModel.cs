@@ -59,7 +59,7 @@ namespace RatingApp.ViewModels
 
                 var loginResult = await _authService.LoginAsync(Username, Password);
 
-                if (loginResult != null && !string.IsNullOrEmpty(loginResult.Token))
+                if (loginResult != null && !string.IsNullOrEmpty(loginResult.access))
                 {
                     System.Diagnostics.Debug.WriteLine($"LOGIN_SUCCESS: User {Username} logged in successfully");
                     

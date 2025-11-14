@@ -13,13 +13,13 @@
         
         <!-- Header with Create Button -->
         <Frame Grid.Row="0" 
-               BackgroundColor="#FF3E3EB" 
+               BackgroundColor="Gray" 
                CornerRadius="0" 
                Padding="15"
                HasShadow="True">
             <Grid ColumnDefinitions="*,Auto">
                 <Label Grid.Column="0" 
-                       Text="My Ratings" 
+                       Text="Наборы данных" 
                        FontSize="20" 
                        FontAttributes="Bold" 
                        TextColor="White"
@@ -29,7 +29,7 @@
                         Text="➕" 
                         Command="{Binding CreateNewItemCommand}"
                         BackgroundColor="White"
-                        TextColor="#FF3E3EB"
+                        TextColor="Gray"
                         FontSize="14"
                         HeightRequest="40"
                         CornerRadius="20"/>
@@ -73,7 +73,7 @@
                                 <Label Text="⭐" FontSize="12" IsVisible="{Binding Rating, Converter={StaticResource RatingVisibleConverter}, ConverterParameter=5}"/>
                                 <Label Text="{Binding Rating}" 
                                        FontSize="12" 
-                                       TextColor="#FF3E3EB"
+                                       TextColor="Gray"
                                        FontAttributes="Bold"/>
                             </HorizontalStackLayout>
                             
@@ -111,7 +111,7 @@
                           IsRunning="{Binding IsBusy}"
                           HorizontalOptions="Center"
                           VerticalOptions="Center"
-                          Color="#FF3E3EB"/>
+                          Color="Gray"/>
         
     </Grid>
     

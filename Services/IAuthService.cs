@@ -32,14 +32,14 @@ namespace RatingApp.Services
             {
                 var loginRequest = new LoginRequest
                 {
-                    Username = username,
-                    Password = password
+                    username = username,
+                    password = password
                 };
 
                 var json = System.Text.Json.JsonSerializer.Serialize(loginRequest);
                 var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync($"{BaseUrl}/login", content);
+                var response = await _httpClient.PostAsync($"{BaseUrl}/login/", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -51,11 +51,10 @@ namespace RatingApp.Services
                         // Сохраняем информацию об авторизации
                         var authInfo = new AuthInfo
                         {
-                            Token = loginResponse.Token,
-                            RefreshToken = loginResponse.RefreshToken,
-                            ExpiresAt = loginResponse.ExpiresAt,
-                            UserId = loginResponse.UserId,
-                            Username = loginResponse.Username
+                            Token = loginResponse.access,
+                            RefreshToken = loginResponse.refresh,
+                            UserId = loginResponse.id,
+                            Username = loginResponse.guid
                         };
                         SaveAuthInfo(authInfo);
                     }

@@ -64,10 +64,34 @@ namespace RatingApp.ViewModels
             }
             catch (Exception ex)
             {
+                await Application.Current.MainPage.DisplayAlert("Error",
+                    $"Failed to open list: {ex.Message}", "OK");
+            }
+        }
+        
+        [RelayCommand]
+        private async Task DatabasesListAsync()
+        {
+            try
+            {
+                var listDatabases = new Views.DatabasesViews.DatabasesListPage(_authService);
+                if (Application.Current?.MainPage is NavigationPage navPage)
+                {
+                    await navPage.PushAsync(listDatabases);
+                }
+                else
+                {
+                    Application.Current.MainPage = new NavigationPage(listDatabases);
+                }
+            }
+            catch (Exception ex)
+            {
                 await Application.Current.MainPage.DisplayAlert("Error", 
                     $"Failed to open list: {ex.Message}", "OK");
             }
         }
+
+
 
         [RelayCommand]
         private void ExitApp()

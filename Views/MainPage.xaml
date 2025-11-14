@@ -2,56 +2,106 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RatingApp.Views.MainPage"
-             Title="">
+             Title="Главное меню">
     
-    <ScrollView>
-        <VerticalStackLayout Padding="40" Spacing="30" VerticalOptions="Center">
-            <!-- Add to the header section -->
-            <Button Grid.Column="1" 
-                Text="🚪" 
-                Command="{Binding LogoutCommand}"
-                BackgroundColor="Transparent"
-                TextColor="White"
-                FontSize="16"
-                WidthRequest="40"
-                HeightRequest="40"/>
-
-            <!-- Header -->
-            <Label Text="Рейтинг букмекеров" 
-                   FontSize="28" 
-                   FontAttributes="Bold" 
-                   HorizontalOptions="Center" 
-                   TextColor="#FF3E3EBD"/>
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header with Logout Button -->
+        <Grid Grid.Row="0" 
+               Padding="20,10,20,10"
+               BackgroundColor="#FF3E3EBD">
             
-            <!-- Welcome Message -->
-            <Label Text="Welcome to the rating management application!" 
-                   FontSize="16" 
-                   HorizontalOptions="Center" 
-                   HorizontalTextAlignment="Center"
-                   TextColor="Gray"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             
-            <!-- Buttons -->
-            <VerticalStackLayout Spacing="15">
-                
-                <Button Text="Рейтинги" 
-                        Command="{Binding ShowRatingCommand}"
-                        BackgroundColor="#FF3E3EBD"
-                        TextColor="White"
-                        FontSize="18"
-                        HeightRequest="60"
-                        CornerRadius="10"/>
-                
-                <Button Text="Выход" 
-                        Command="{Binding ExitAppCommand}"
-                        BackgroundColor="#FF3E3EBD"
-                        TextColor="White"
-                        FontSize="18"
-                        HeightRequest="60"
-                        CornerRadius="10"/>
+            <!-- App Title -->
+            <Label Grid.Column="0"
+                   Text="Analytics"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center"/>
+            
+            <!-- Profile Button -->
+           <ImageButton Grid.Column="1"
+                        Source="profile_icon.png"
+                        Command="{Binding ProfileCommand}"
+                        BackgroundColor="Transparent"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        Margin="0,0,10,0"/>
+            
+            <!-- Logout Button -->
+            <ImageButton Grid.Column="2"
+                        Source="logout_icon.png"
+                        Command="{Binding LogoutCommand}"
+                        BackgroundColor="Transparent"
+                        WidthRequest="40"
+                        HeightRequest="40"/>
                     
+        </Grid>
+        
+        <!-- Main Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="40" Spacing="30" VerticalOptions="Center">
+                
+                <!-- Page Title -->
+                <!-- <Label Text="Главное меню" 
+                       FontSize="28" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" 
+                       TextColor="#FF3E3EBD"/>
+                 -->
+                <!-- Welcome Message -->
+                <Label Text="Выберите раздел для работы" 
+                       FontSize="16" 
+                       HorizontalOptions="Center" 
+                       HorizontalTextAlignment="Center"
+                       TextColor="Gray"/>
+                
+                <!-- Buttons -->
+                <VerticalStackLayout Spacing="15">
+
+                    <Button Text="Планшеты" 
+                            Command="{Binding ShowRatingCommand}"
+                            BackgroundColor="#FF3E3EBD"
+                            TextColor="White"
+                            FontSize="18"
+                            HeightRequest="60"
+                            CornerRadius="10"/>
+                    
+                    <Button Text="Визуализации" 
+                            Command="{Binding ExitAppCommand}"
+                            BackgroundColor="#FF3E3EBD"
+                            TextColor="White"
+                            FontSize="18"
+                            HeightRequest="60"
+                            CornerRadius="10"/>
+
+                    
+                    <Button Text="Наборы данных" 
+                            Command="{Binding ShowRatingCommand}"
+                            BackgroundColor="#FF3E3EBD"
+                            TextColor="White"
+                            FontSize="18"
+                            HeightRequest="60"
+                            CornerRadius="10"/>
+                    
+                    <Button Text="Базы данных" 
+                            Command="{Binding DatabasesListAsyncCommand}"
+                            BackgroundColor="#FF3E3EBD"
+                            TextColor="White"
+                            FontSize="18"
+                            HeightRequest="60"
+                            CornerRadius="10"/>
+                        
+                </VerticalStackLayout>
+                
             </VerticalStackLayout>
-            
-        </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+        
+    </Grid>
     
 </ContentPage>

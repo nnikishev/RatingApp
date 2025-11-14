@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using RatingApp.Services;
 
 namespace RatingApp.ViewModels
 {
@@ -9,5 +10,7 @@ namespace RatingApp.ViewModels
 
         [ObservableProperty]
         private string _title = string.Empty;
+
+        private readonly IRatingService _ratingService;
     }
 }
