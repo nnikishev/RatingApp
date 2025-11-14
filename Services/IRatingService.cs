@@ -8,26 +8,32 @@ namespace RatingApp.Services
         Task<RatingItem?> GetItemAsync(int id);
         Task<int> SaveItemAsync(RatingItem item);
         Task<int> DeleteItemAsync(RatingItem item);
-        Task<bool> IsDatabaseReady(); // New method to check database status
-    }
-    
-    public class RatingService : IRatingService
-    {
-        private readonly DatabaseContext _databaseContext;
+        Task<bool> IsDatabaseReady();
         
-        public RatingService()
-        {
-            _databaseContext = new DatabaseContext();
-        }
+        // Новые методы для работы с базами данных
+        Task<List<Database>> GetDatabasesAsync();
+        Task<Database?> GetDatabaseAsync(int id);
+        Task<int> SaveDatabaseAsync(Database database);
+        Task<int> DeleteDatabaseAsync(Database database);
         
-        public Task<List<RatingItem>> GetItemsAsync() => _databaseContext.GetItemsAsync();
-        public Task<RatingItem?> GetItemAsync(int id) => _databaseContext.GetItemAsync(id);
-        public Task<int> SaveItemAsync(RatingItem item) => _databaseContext.SaveItemAsync(item);
-        public Task<int> DeleteItemAsync(RatingItem item) => _databaseContext.DeleteItemAsync(item);
+        // Методы для работы с источниками
+        Task<List<Source>> GetSourcesAsync();
+        Task<List<Source>> GetSourcesByDatabaseIdAsync(int databaseId);
+        Task<Source?> GetSourceAsync(int id);
+        Task<int> SaveSourceAsync(Source source);
+        Task<int> DeleteSourceAsync(Source source);
         
-        public async Task<bool> IsDatabaseReady()
-        {
-            return await _databaseContext.CheckDatabaseStatus();
-        }
+        // Методы для работы с диаграммами
+        Task<List<Chart>> GetChartsAsync();
+        Task<List<Chart>> GetChartsBySourceIdAsync(int sourceId);
+        Task<Chart?> GetChartAsync(int id);
+        Task<int> SaveChartAsync(Chart chart);
+        Task<int> DeleteChartAsync(Chart chart);
+        
+        // Методы для работы с дашбордами
+        Task<List<Dashboard>> GetDashboardsAsync();
+        Task<Dashboard?> GetDashboardAsync(int id);
+        Task<int> SaveDashboardAsync(Dashboard dashboard);
+        Task<int> DeleteDashboardAsync(Dashboard dashboard);
     }
 }

@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RatingApp.Services;
 using RatingApp.Views;
+using RatingApp.Models;
 
 namespace RatingApp.ViewModels
 {
@@ -9,13 +10,14 @@ namespace RatingApp.ViewModels
     {
         private readonly IRatingService _ratingService;
         private readonly IAuthService _authService;
+        private readonly DatabaseContext _databaseContext;
 
-        public MainViewModel(IRatingService ratingService, IAuthService authService)
+        public MainViewModel(IRatingService ratingService, IAuthService authService, DatabaseContext databaseContext)
         {
             _ratingService = ratingService;
             _authService = authService;
+            _databaseContext = databaseContext;
         }
-
 
         [RelayCommand]
         private async Task LogoutAsync()
@@ -23,27 +25,23 @@ namespace RatingApp.ViewModels
             try
             {
                 bool answer = await Application.Current.MainPage.DisplayAlert(
-                    "Logout",
-                    "Are you sure you want to logout?",
-                    "Yes", "No");
+                    "Выход",
+                    "Вы уверены, что хотите выйти?",
+                    "Да", "Нет");
 
                 if (answer)
                 {
                     await _authService.LogoutAsync();
 
                     // Navigate back to login page
-                    Application.Current.MainPage = new LoginPage(_authService, _ratingService);
+                    Application.Current.MainPage = new NavigationPage(new LoginPage(_authService, _ratingService, _databaseContext));
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Logout failed", "OK");
+                await Application.Current.MainPage.DisplayAlert("Ошибка", "Не удалось выйти", "OK");
                 System.Diagnostics.Debug.WriteLine($"LOGOUT_ERROR: {ex.Message}");
             }
-        }
-        public MainViewModel(IRatingService ratingService)
-        {
-            _ratingService = ratingService;
         }
 
         [RelayCommand]
@@ -64,8 +62,8 @@ namespace RatingApp.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error",
-                    $"Failed to open list: {ex.Message}", "OK");
+                await Application.Current.MainPage.DisplayAlert("Ошибка",
+                    $"Не удалось открыть список рейтингов: {ex.Message}", "OK");
             }
         }
         
@@ -74,7 +72,7 @@ namespace RatingApp.ViewModels
         {
             try
             {
-                var listDatabases = new Views.DatabasesViews.DatabasesListPage(_authService);
+                var listDatabases = new DatabasesListPage(_databaseContext, _ratingService);
                 if (Application.Current?.MainPage is NavigationPage navPage)
                 {
                     await navPage.PushAsync(listDatabases);
@@ -86,17 +84,78 @@ namespace RatingApp.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", 
-                    $"Failed to open list: {ex.Message}", "OK");
+                await Application.Current.MainPage.DisplayAlert("Ошибка", 
+                    $"Не удалось открыть список баз данных: {ex.Message}", "OK");
             }
         }
 
+        [RelayCommand]
+        private async Task VisualizationsAsync()
+        {
+            try
+            {
+                // Здесь будет переход к визуализациям
+                await Application.Current.MainPage.DisplayAlert("Информация", 
+                    "Раздел визуализаций в разработке", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ошибка", 
+                    $"Не удалось открыть визуализации: {ex.Message}", "OK");
+            }
+        }
 
+        [RelayCommand]
+        private async Task DatasetsAsync()
+        {
+            try
+            {
+                // Здесь будет переход к наборам данных
+                await Application.Current.MainPage.DisplayAlert("Информация", 
+                    "Раздел наборов данных в разработке", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ошибка", 
+                    $"Не удалось открыть наборы данных: {ex.Message}", "OK");
+            }
+        }
 
         [RelayCommand]
         private void ExitApp()
         {
-            Application.Current?.Quit();
+            try
+            {
+                bool answer = Application.Current.MainPage.DisplayAlert(
+                    "Выход",
+                    "Вы уверены, что хотите выйти из приложения?",
+                    "Да", "Нет").GetAwaiter().GetResult();
+
+                if (answer)
+                {
+                    Application.Current?.Quit();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"EXIT_APP_ERROR: {ex.Message}");
+                Application.Current?.Quit();
+            }
+        }
+
+        [RelayCommand]
+        private async Task ProfileAsync()
+        {
+            try
+            {
+                await Application.Current.MainPage.DisplayAlert("Профиль", 
+                    "Функционал профиля в разработке", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ошибка", 
+                    $"Не удалось открыть профиль: {ex.Message}", "OK");
+            }
         }
     }
 }

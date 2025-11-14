@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="RatingApp.Views.DatabasesViews.DatabasesListPage"
+    x:Class="RatingApp.Views.DatabasesListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+    xmlns:models="clr-namespace:RatingApp.Models"
+    xmlns:converters="clr-namespace:RatingApp.Converters"
+    xmlns:local="clr-namespace:RatingApp.Views"
     Title="Базы данных"
     BackgroundColor="{StaticResource DBL.PageBgColor}"
     Padding="20,16">
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:BoolToStatusPillConverter x:Key="BoolToStatusPillConverter"/>
+            <converters:BoolToStatusTextConverter x:Key="BoolToStatusTextConverter"/>
+            <converters:BoolToStatusTextStyleConverter x:Key="BoolToStatusTextStyleConverter"/>
+            
             <!-- Палитра -->
             <Color x:Key="DBL.PageBgColor">#F4F6FB</Color>
             <Color x:Key="DBL.CardBg">#FFFFFF</Color>
@@ -28,6 +35,9 @@
 
             <Color x:Key="DBL.FabStart">#8459FF</Color>
             <Color x:Key="DBL.FabEnd">#6A31FF</Color>
+
+            <Color x:Key="DBL.EditIcon">#3B82F6</Color>
+            <Color x:Key="DBL.DeleteIcon">#EF4444</Color>
 
             <!-- Стили текста -->
             <Style x:Key="DBL.H1" TargetType="Label">
@@ -119,6 +129,14 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <!-- Стили для иконок действий -->
+            <!-- <Style x:Key="DBL.ActionIcon" TargetType="ImageButton">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="WidthRequest" Value="32" />
+                <Setter Property="HeightRequest" Value="32" />
+                <Setter Property="CornerRadius" Value="8" />
+            </Style> -->
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -131,183 +149,116 @@
             <VerticalStackLayout Spacing="16">
 
                 <!-- Навбар -->
-                <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,0,0,8">
-                    <Label Text="←" FontSize="18" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
+                <!-- <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,0,0,8">
+                    <ImageButton Source="left-arrow.png" 
+                               Command="{Binding GoBackCommand}"
+                               Style="{StaticResource DBL.ActionIcon}"
+                               WidthRequest="24"
+                               HeightRequest="24"/>
                     <Label Grid.Column="1" Text="Назад в меню" FontSize="14" TextColor="{StaticResource DBL.SecondaryText}" VerticalOptions="Center" />
-                </Grid>
+                </Grid> -->
 
                 <Label Text="Базы данных" Style="{StaticResource DBL.H1}" />
                 <Label Text="Управление подключениями" Style="{StaticResource DBL.Subtitle}" />
 
-                <!-- production_db -->
-                <Frame Style="{StaticResource DBL.CardFrame}">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
-                          ColumnDefinitions="*,Auto"
-                          ColumnSpacing="8" RowSpacing="10">
-                        <Label Grid.Row="0" Grid.Column="0" Text="production_db" Style="{StaticResource DBL.CardTitle}" />
-                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
+                <!-- Список баз данных -->
+                <CollectionView ItemsSource="{Binding Databases}"
+                              EmptyView="Нет добавленных баз данных">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Database">
+                            <Frame Style="{StaticResource DBL.CardFrame}">
+                                <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                                      ColumnDefinitions="*,Auto"
+                                      ColumnSpacing="8" RowSpacing="10">
+                                    <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.ShowDatabaseDetailCommand}"
+                                  CommandParameter="{Binding .}"/>
+        </Grid.GestureRecognizers>
+                                    <!-- Заголовок и кнопки действий -->
+                                    <Grid Grid.Row="0" Grid.ColumnSpan="2" 
+                                          ColumnDefinitions="*,Auto,Auto"
+                                          ColumnSpacing="8">
+                                        
+                                        <Label Grid.Column="0" 
+                                               Text="{Binding Name}" 
+                                               Style="{StaticResource DBL.CardTitle}" 
+                                               VerticalOptions="Center"/>
+                                        
+                                        <!-- Кнопка редактирования -->
+                                        <ImageButton Grid.Column="1"
+                                                   Source="edit.png"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.EditDatabaseCommand}"
+                                                   CommandParameter="{Binding .}"
+                                                   Style="{StaticResource DBL.ActionIcon}"
+                                                   WidthRequest="20"
+                                                    HeightRequest="20"
+                                                   BackgroundColor="{StaticResource DBL.EditIcon}"/>
+                                        
+                                        <!-- Кнопка удаления -->
+                                        <ImageButton Grid.Column="2"
+                                                   Source="delete.png"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.DeleteDatabaseCommand}"
+                                                   CommandParameter="{Binding .}"
+                                                   Style="{StaticResource DBL.ActionIcon}"
+                                                   WidthRequest="20"
+                                                    HeightRequest="20"
+                                                   BackgroundColor="{StaticResource DBL.DeleteIcon}"/>
+                                    </Grid>
 
-                        <Label Grid.Row="1" Grid.ColumnSpan="2"
-                               Text="База данных производственных данных"
-                               Style="{StaticResource DBL.CardSubtitle}" />
+                                    <!-- Описание -->
+                                    <Label Grid.Row="1" Grid.ColumnSpan="2"
+                                           Text="{Binding Description}"
+                                           Style="{StaticResource DBL.CardSubtitle}" />
 
-                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
-                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
-                                <HorizontalStackLayout Spacing="6">
-                                    <Label Text="🗄" FontSize="12" VerticalTextAlignment="Center" />
-                                    <Label Text="PostgreSQL" Style="{StaticResource DBL.ChipTextStyle}" />
-                                </HorizontalStackLayout>
-                            </Border>
+                                    <!-- Информация о БД -->
+                                    <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" 
+                                                Direction="Row" 
+                                                Wrap="NoWrap" 
+                                                AlignItems="Center" 
+                                                JustifyContent="Start">
+                                        <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Image 
+                                            Source="{Binding IsActive, Converter={converters:BoolToStatusIconConverter}}"
+                                            WidthRequest="20"
+                                            HeightRequest="20"
+                                            VerticalOptions="Center"/>  
+                                                <Label Text="{Binding Type}" Style="{StaticResource DBL.ChipTextStyle}" />
+                                            </HorizontalStackLayout>
+                                        </Border>
 
-                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
-                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
-                                <Label Text="192.168.1.10:5432" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
+                                            <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
+                                            <Label Text="{Binding Host, StringFormat='{0}:{1}'}" 
+                                                   Style="{StaticResource DBL.InfoText}" />
+                                        </HorizontalStackLayout>
 
-                            <HorizontalStackLayout Spacing="6">
-                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
-                                <Label Text="2024-10-15" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
-                        </FlexLayout>
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
+                                            <Label Text="{Binding CreatedAt, StringFormat='{0:yyyy-MM-dd}'}" 
+                                                   Style="{StaticResource DBL.InfoText}" />
+                                        </HorizontalStackLayout>
+                                    </FlexLayout>
 
-                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
-                            <Border Style="{StaticResource DBL.PillConnected}">
-                                <Label Text="Подключено" Style="{StaticResource DBL.PillTextConnected}" />
-                            </Border>
-                            <Grid Grid.Column="1" />
-                            <Label Grid.Column="2" Text="24 таблиц" Style="{StaticResource DBL.InfoText}" />
-                        </Grid>
-                    </Grid>
-                </Frame>
-
-                <!-- geology_db -->
-                <Frame Style="{StaticResource DBL.CardFrame}">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
-                          ColumnDefinitions="*,Auto"
-                          ColumnSpacing="8" RowSpacing="10">
-                        <Label Grid.Row="0" Grid.Column="0" Text="geology_db" Style="{StaticResource DBL.CardTitle}" />
-                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
-
-                        <Label Grid.Row="1" Grid.ColumnSpan="2"
-                               Text="Геологическая информация"
-                               Style="{StaticResource DBL.CardSubtitle}" />
-
-                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
-                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
-                                <HorizontalStackLayout Spacing="6">
-                                    <Label Text="🗄" FontSize="12" />
-                                    <Label Text="PostgreSQL" Style="{StaticResource DBL.ChipTextStyle}" />
-                                </HorizontalStackLayout>
-                            </Border>
-
-                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
-                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
-                                <Label Text="192.168.1.11:5432" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
-
-                            <HorizontalStackLayout Spacing="6">
-                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
-                                <Label Text="2024-10-12" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
-                        </FlexLayout>
-
-                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
-                            <Border Style="{StaticResource DBL.PillConnected}">
-                                <Label Text="Подключено" Style="{StaticResource DBL.PillTextConnected}" />
-                            </Border>
-                            <Grid Grid.Column="1" />
-                            <Label Grid.Column="2" Text="18 таблиц" Style="{StaticResource DBL.InfoText}" />
-                        </Grid>
-                    </Grid>
-                </Frame>
-
-                <!-- equipment_db (отключено) -->
-                <Frame Style="{StaticResource DBL.CardFrame}">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
-                          ColumnDefinitions="*,Auto"
-                          ColumnSpacing="8" RowSpacing="10">
-                        <Label Grid.Row="0" Grid.Column="0" Text="equipment_db" Style="{StaticResource DBL.CardTitle}" />
-                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
-
-                        <Label Grid.Row="1" Grid.ColumnSpan="2"
-                               Text="База данных оборудования"
-                               Style="{StaticResource DBL.CardSubtitle}" />
-
-                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
-                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
-                                <HorizontalStackLayout Spacing="6">
-                                    <Label Text="🗄" FontSize="12" />
-                                    <Label Text="MySQL" Style="{StaticResource DBL.ChipTextStyle}" />
-                                </HorizontalStackLayout>
-                            </Border>
-
-                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
-                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
-                                <Label Text="192.168.1.12:3306" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
-
-                            <HorizontalStackLayout Spacing="6">
-                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
-                                <Label Text="2024-10-08" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
-                        </FlexLayout>
-
-                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
-                            <Border Style="{StaticResource DBL.PillDisconnected}">
-                                <Label Text="Отключено" Style="{StaticResource DBL.PillTextDisconnected}" />
-                            </Border>
-                            <Grid Grid.Column="1" />
-                            <Label Grid.Column="2" Text="12 таблиц" Style="{StaticResource DBL.InfoText}" />
-                        </Grid>
-                    </Grid>
-                </Frame>
-
-                <!-- analytics_db -->
-                <Frame Style="{StaticResource DBL.CardFrame}">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
-                          ColumnDefinitions="*,Auto"
-                          ColumnSpacing="8" RowSpacing="10">
-                        <Label Grid.Row="0" Grid.Column="0" Text="analytics_db" Style="{StaticResource DBL.CardTitle}" />
-                        <Label Grid.Row="0" Grid.Column="1" Text="›" FontSize="22" TextColor="{StaticResource DBL.MutedText}" VerticalOptions="Center" />
-
-                        <Label Grid.Row="1" Grid.ColumnSpan="2"
-                               Text="Аналитические данные и отчеты"
-                               Style="{StaticResource DBL.CardSubtitle}" />
-
-                        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2" Direction="Row" Wrap="NoWrap" AlignItems="Center" JustifyContent="Start">
-                            <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
-                                <HorizontalStackLayout Spacing="6">
-                                    <Label Text="🗄" FontSize="12" />
-                                    <Label Text="PostgreSQL" Style="{StaticResource DBL.ChipTextStyle}" />
-                                </HorizontalStackLayout>
-                            </Border>
-
-                            <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
-                                <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
-                                <Label Text="192.168.1.13:5432" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
-
-                            <HorizontalStackLayout Spacing="6">
-                                <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" />
-                                <Label Text="2024-09-28" Style="{StaticResource DBL.InfoText}" />
-                            </HorizontalStackLayout>
-                        </FlexLayout>
-
-                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,* ,Auto">
-                            <Border Style="{StaticResource DBL.PillConnected}">
-                                <Label Text="Подключено" Style="{StaticResource DBL.PillTextConnected}" />
-                            </Border>
-                            <Grid Grid.Column="1" />
-                            <Label Grid.Column="2" Text="31 таблиц" Style="{StaticResource DBL.InfoText}" />
-                        </Grid>
-                    </Grid>
-                </Frame>
+                                    <!-- Статус подключения -->
+                                    <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*,Auto">
+                                        <Grid Grid.Column="1" />
+                                        
+                                        <Label Grid.Column="2" 
+                                               Text="{Binding SourcesCount, StringFormat='{0} источников'}" 
+                                               Style="{StaticResource DBL.InfoText}" />
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
                 <BoxView HeightRequest="24" Opacity="0" />
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- FAB "+" (в правом верхнем углу, как в макете) -->
+        <!-- FAB "+" -->
         <Border
             AbsoluteLayout.LayoutBounds="1,0,56,56"
             AbsoluteLayout.LayoutFlags="PositionProportional"
@@ -325,7 +276,11 @@
                 <Shadow Brush="#33000000" Offset="0,6" Radius="16" Opacity="0.6" />
             </Border.Shadow>
             <Grid>
-                <Label Text="+" TextColor="White" FontSize="28" HorizontalOptions="Center" VerticalOptions="Center" />
+                <ImageButton Source="add.png"
+                           Command="{Binding AddDatabaseCommand}"
+                           BackgroundColor="Transparent"
+                           WidthRequest="56"
+                           HeightRequest="56"/>
             </Grid>
         </Border>
 

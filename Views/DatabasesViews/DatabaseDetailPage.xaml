@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:RatingApp.Models"
+             x:Class="RatingApp.Views.DatabaseDetailPage"
+             Title="{Binding Database.Name}">
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Заголовок -->
+            <Label Text="{Binding Database.Name}" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+            
+            <Label Text="{Binding Database.Description}" 
+                   FontSize="16" 
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   TextColor="Gray"/>
+
+            <!-- Информация о базе данных -->
+            <Frame BackgroundColor="#F8F9FA" CornerRadius="12" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Информация о базе данных" 
+                           FontSize="18" 
+                           FontAttributes="Bold"/>
+                    
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" 
+                          RowSpacing="10" ColumnSpacing="15">
+                        
+                        <Label Grid.Row="0" Grid.Column="0" Text="Тип" FontAttributes="Bold"/>
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Database.Type}"/>
+                        
+                        <Label Grid.Row="1" Grid.Column="0" Text="Хост" FontAttributes="Bold"/>
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Database.Host, StringFormat='{0}:{1}'}"/>
+                        
+                        <Label Grid.Row="2" Grid.Column="0" Text="Создано" FontAttributes="Bold"/>
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding Database.CreatedAt, StringFormat='{0:yyyy-MM-dd}'}"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Разделитель -->
+            <BoxView HeightRequest="1" BackgroundColor="#E5E7EB" Margin="0,10"/>
+
+            <!-- Статус подключения -->
+            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                <Label Text="{Binding ConnectionStatus}" 
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="{Binding Database.IsActive, Converter={StaticResource BoolToStatusColorConverter}}"/>
+                
+                <Button Text="Тестировать" 
+                        Command="{Binding TestConnectionCommand}"
+                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
+                        BackgroundColor="#007BFF"
+                        TextColor="White"
+                        CornerRadius="8"
+                        HeightRequest="35"
+                        FontSize="14"/>
+            </HorizontalStackLayout>
+
+            <!-- Разделитель -->
+            <BoxView HeightRequest="1" BackgroundColor="#E5E7EB" Margin="0,10"/>
+
+            <!-- Таблицы -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Таблицы" 
+                       FontSize="18" 
+                       FontAttributes="Bold"/>
+                
+                <CollectionView ItemsSource="{Binding Tables}"
+                              EmptyView="Нет таблиц или нет подключения к БД">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TableInfo">
+                            <Frame BackgroundColor="White" 
+                                   CornerRadius="8" 
+                                   Padding="12"
+                                   HasShadow="True">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="14" 
+                                           FontAttributes="Bold"/>
+                                    <Label Text="{Binding RowCount, StringFormat='{0:N0} строк'}" 
+                                           FontSize="12" 
+                                           TextColor="Gray"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

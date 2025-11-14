@@ -71,7 +71,7 @@
                                FontAttributes="Bold" 
                                TextColor="#495057"/>
                         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                            <Button Text="1" 
+                            <Button Text="⭐" 
                                     Command="{Binding SetRatingCommand}"
                                     CommandParameter="1"
                                     BackgroundColor="{Binding Item.Rating, Converter={StaticResource RatingToColorConverter}, ConverterParameter=1}"
@@ -79,7 +79,7 @@
                                     WidthRequest="40"
                                     HeightRequest="40"
                                     CornerRadius="20"/>
-                            <Button Text="2" 
+                            <Button Text="⭐" 
                                     Command="{Binding SetRatingCommand}"
                                     CommandParameter="2"
                                     BackgroundColor="{Binding Item.Rating, Converter={StaticResource RatingToColorConverter}, ConverterParameter=2}"
@@ -87,7 +87,7 @@
                                     WidthRequest="40"
                                     HeightRequest="40"
                                     CornerRadius="20"/>
-                            <Button Text="3" 
+                            <Button Text="⭐" 
                                     Command="{Binding SetRatingCommand}"
                                     CommandParameter="3"
                                     BackgroundColor="{Binding Item.Rating, Converter={StaticResource RatingToColorConverter}, ConverterParameter=3}"
@@ -95,7 +95,7 @@
                                     WidthRequest="40"
                                     HeightRequest="40"
                                     CornerRadius="20"/>
-                            <Button Text="4" 
+                            <Button Text="⭐" 
                                     Command="{Binding SetRatingCommand}"
                                     CommandParameter="4"
                                     BackgroundColor="{Binding Item.Rating, Converter={StaticResource RatingToColorConverter}, ConverterParameter=4}"
@@ -103,7 +103,7 @@
                                     WidthRequest="40"
                                     HeightRequest="40"
                                     CornerRadius="20"/>
-                            <Button Text="5" 
+                            <Button Text="⭐" 
                                     Command="{Binding SetRatingCommand}"
                                     CommandParameter="5"
                                     BackgroundColor="{Binding Item.Rating, Converter={StaticResource RatingToColorConverter}, ConverterParameter=5}"

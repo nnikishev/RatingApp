@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RatingApp.Services;
 using RatingApp.Views;
+using RatingApp.Models;
 
 namespace RatingApp.ViewModels
 {
@@ -9,6 +10,7 @@ namespace RatingApp.ViewModels
     {
         private readonly IAuthService _authService;
         private readonly IRatingService _ratingService;
+        private readonly DatabaseContext _databaseContext;
 
         [ObservableProperty]
         private string _username = string.Empty;
@@ -22,10 +24,11 @@ namespace RatingApp.ViewModels
         [ObservableProperty]
         private bool _isLoginFailed = false;
 
-        public LoginViewModel(IAuthService authService, IRatingService ratingService)
+        public LoginViewModel(IAuthService authService, IRatingService ratingService, DatabaseContext databaseContext)
         {
             _authService = authService;
             _ratingService = ratingService;
+            _databaseContext = databaseContext;
             Title = "Login";
         }
 
@@ -64,7 +67,7 @@ namespace RatingApp.ViewModels
                     System.Diagnostics.Debug.WriteLine($"LOGIN_SUCCESS: User {Username} logged in successfully");
                     
                     // Navigate to main app
-                    Application.Current.MainPage = new NavigationPage(new MainPage(_ratingService, _authService));
+                    Application.Current.MainPage = new NavigationPage(new MainPage(_ratingService, _authService, _databaseContext));
                 }
                 else
                 {
