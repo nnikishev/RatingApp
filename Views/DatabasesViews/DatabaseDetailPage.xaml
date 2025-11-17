@@ -53,14 +53,13 @@
                        FontAttributes="Bold"
                        TextColor="{Binding Database.IsActive, Converter={StaticResource BoolToStatusColorConverter}}"/>
                 
-                <Button Text="Тестировать" 
+                <ImageButton 
+                        Source="connect.png"
                         Command="{Binding TestConnectionCommand}"
                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
-                        BackgroundColor="#007BFF"
-                        TextColor="White"
                         CornerRadius="8"
-                        HeightRequest="35"
-                        FontSize="14"/>
+                        HeightRequest="30"
+                        WidthRequest="30"/>
             </HorizontalStackLayout>
 
             <!-- Разделитель -->
@@ -84,18 +83,22 @@
                        FontSize="16"
                        VerticalOptions="Center"/>
                 
-                <Label Grid.Column="1"
+                <Label 
+                       Margin="3"        
+                       Grid.Column="1"
                        Text="{Binding RowCount, StringFormat='{0:N0} строк'}"
                        FontSize="14"
                        TextColor="Gray"
                        VerticalOptions="Center"/>
                 
-                <Button Grid.Column="2"
-                        Text="👁️"
+               <ImageButton Grid.Column="2"
+                        Margin="3"
+                        Source="view.png"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:DatabaseDetailViewModel}}, Path=ViewTableCommand}"
                         CommandParameter="{Binding .}"
                         BackgroundColor="Transparent"
-                        WidthRequest="40"/>
+                        WidthRequest="26"
+                        HeightRequest="26"/>
             </Grid>
         </DataTemplate>
     </CollectionView.ItemTemplate>

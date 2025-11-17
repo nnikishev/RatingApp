@@ -174,36 +174,43 @@
             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.ShowDatabaseDetailCommand}"
                                   CommandParameter="{Binding .}"/>
         </Grid.GestureRecognizers>
-                                    <!-- Заголовок и кнопки действий -->
                                     <Grid Grid.Row="0" Grid.ColumnSpan="2" 
-                                          ColumnDefinitions="*,Auto,Auto"
-                                          ColumnSpacing="8">
-                                        
-                                        <Label Grid.Column="0" 
-                                               Text="{Binding Name}" 
-                                               Style="{StaticResource DBL.CardTitle}" 
-                                               VerticalOptions="Center"/>
-                                        
-                                        <!-- Кнопка редактирования -->
-                                        <ImageButton Grid.Column="1"
-                                                   Source="edit.png"
-                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.EditDatabaseCommand}"
-                                                   CommandParameter="{Binding .}"
-                                                   Style="{StaticResource DBL.ActionIcon}"
-                                                   WidthRequest="20"
-                                                    HeightRequest="20"
-                                                   BackgroundColor="{StaticResource DBL.EditIcon}"/>
-                                        
-                                        <!-- Кнопка удаления -->
-                                        <ImageButton Grid.Column="2"
-                                                   Source="delete.png"
-                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.DeleteDatabaseCommand}"
-                                                   CommandParameter="{Binding .}"
-                                                   Style="{StaticResource DBL.ActionIcon}"
-                                                   WidthRequest="20"
-                                                    HeightRequest="20"
-                                                   BackgroundColor="{StaticResource DBL.DeleteIcon}"/>
-                                    </Grid>
+      ColumnDefinitions="*,Auto,Auto,Auto"
+      ColumnSpacing="8">
+    
+    <Label Grid.Column="0" 
+           Text="{Binding Name}" 
+           Style="{StaticResource DBL.CardTitle}" 
+           VerticalOptions="Center"/>
+    
+    <ImageButton Grid.Column="1"
+               Source="shell.png"
+               Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.OpenSqlShellCommand}"
+               CommandParameter="{Binding .}"
+               Style="{StaticResource DBL.ActionIcon}"
+               WidthRequest="20"
+               HeightRequest="20"
+               BackgroundColor="White"/> 
+    
+    <ImageButton Grid.Column="2"
+               Source="edit.png"
+               Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.EditDatabaseCommand}"
+               CommandParameter="{Binding .}"
+               Style="{StaticResource DBL.ActionIcon}"
+               WidthRequest="20"
+               HeightRequest="20"
+               BackgroundColor="White"/>
+    
+    <!-- Кнопка удаления -->
+    <ImageButton Grid.Column="3"
+               Source="delete.png"
+               Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatabasesListPage}}, Path=BindingContext.DeleteDatabaseCommand}"
+               CommandParameter="{Binding .}"
+               Style="{StaticResource DBL.ActionIcon}"
+               WidthRequest="20"
+               HeightRequest="20"
+               BackgroundColor="White"/>
+</Grid>
 
                                     <!-- Описание -->
                                     <Label Grid.Row="1" Grid.ColumnSpan="2"
@@ -260,27 +267,15 @@
 
         <!-- FAB "+" -->
         <Border
-            AbsoluteLayout.LayoutBounds="1,0,56,56"
+            AbsoluteLayout.LayoutBounds="1,0,42,42"
             AbsoluteLayout.LayoutFlags="PositionProportional"
             StrokeThickness="0">
-            <Border.StrokeShape>
-                <shapes:RoundRectangle CornerRadius="16" />
-            </Border.StrokeShape>
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{StaticResource DBL.FabStart}" Offset="0.0" />
-                    <GradientStop Color="{StaticResource DBL.FabEnd}" Offset="1.0" />
-                </LinearGradientBrush>
-            </Border.Background>
-            <Border.Shadow>
-                <Shadow Brush="#33000000" Offset="0,6" Radius="16" Opacity="0.6" />
-            </Border.Shadow>
             <Grid>
                 <ImageButton Source="add.png"
                            Command="{Binding AddDatabaseCommand}"
                            BackgroundColor="Transparent"
-                           WidthRequest="56"
-                           HeightRequest="56"/>
+                           WidthRequest="26"
+                           HeightRequest="26"/>
             </Grid>
         </Border>
 

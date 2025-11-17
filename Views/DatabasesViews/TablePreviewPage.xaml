@@ -14,26 +14,26 @@
               Margin="0,0,0,5">
             
             <Label Grid.Column="0"
-                   Text="{Binding TableData.TableName, StringFormat='Таблица: {0}'}"
+                   Text="{Binding TableData.TableName, StringFormat='{0}'}"
                    FontSize="18"
                    FontAttributes="Bold"
                    VerticalOptions="Center"/>
             
-            <Button Grid.Column="1"
-                    Text="🔄"
-                    FontSize="16"
+           <ImageButton Grid.Column="1"
+                    Source="refresh.png"
                     Command="{Binding RefreshDataCommand}"
                     IsEnabled="{Binding IsNotLoading}"
                     BackgroundColor="Transparent"
-                    WidthRequest="40"
+                    WidthRequest="26"
+                    HeightRequest="26"
                     Margin="5,0"/>
             
-            <Button Grid.Column="2"
-                    Text="⬅️"
-                    FontSize="16"
+           <ImageButton Grid.Column="2"
+                    Source="left_arrow.png"
                     Command="{Binding GoBackCommand}"
                     BackgroundColor="Transparent"
-                    WidthRequest="40"
+                    WidthRequest="26"
+                    HeightRequest="26"
                     Margin="5,0"/>
         </Grid>
 
@@ -49,13 +49,13 @@
                    VerticalOptions="Center"
                    LineBreakMode="TailTruncation"/>
             
-            <Button Grid.Column="1"
-                    Text="❌ Сбросить фильтры"
-                    FontSize="12"
+            <ImageButton Grid.Column="1"
+                    Source="clear_filter.png"
                     Command="{Binding ClearFiltersCommand}"
                     IsEnabled="{Binding IsNotLoading}"
                     BackgroundColor="Transparent"
-                    TextColor="{AppThemeBinding Light=#CC0000, Dark=#FF6666}"
+                    WidthRequest="26"
+                    HeightRequest="26"
                     Margin="5,0"/>
         </Grid>
 

@@ -54,6 +54,16 @@
     <MauiImage Include="Resources\Icons\database_ok.png" />
     <MauiImage Include="Resources\Icons\database_error.png" />
     <MauiImage Include="Resources\Icons\add.png" />
+    <MauiImage Include="Resources\Icons\shell.png" />
+    <MauiImage Include="Resources\Icons\refresh.png" />
+    <MauiImage Include="Resources\Icons\view.png" />
+    <MauiImage Include="Resources\Icons\clear_filter.png" />
+    <MauiImage Include="Resources\Icons\play.png" />
+    <MauiImage Include="Resources\Icons\broom.png" />
+    <MauiImage Include="Resources\Icons\filter.png" />
+    <MauiImage Include="Resources\Icons\connect.png" />
+    <MauiImage Include="Resources\Icons\close.png" />
+    <MauiImage Include="Resources\Icons\copy.png" />
     <MauiImage Include="Resources\Backgrounds\login_background.jpg" />
     <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.69" Color="#512BD4" />
   </ItemGroup>

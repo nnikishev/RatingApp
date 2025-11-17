@@ -103,18 +103,17 @@
                               Color="#28A745"
                               VerticalOptions="Center"/>
                     
-                    <Label Text="Протестировать подключение" 
+                    <Label Text="Подключение    " 
                            FontSize="14"
                            VerticalOptions="Center"/>
                     
-                    <Button Text="Тестировать" 
-                            Command="{Binding TestConnectionCommand}"
-                            IsEnabled="{Binding IsTesting, Converter={StaticResource InverseBoolConverter}}"
-                            BackgroundColor="{Binding IsConnectionSuccessful, Converter={StaticResource BoolToColorConverter}}"
-                            TextColor="White"
-                            CornerRadius="8"
-                            HeightRequest="40"
-                            HorizontalOptions="EndAndExpand"/>
+                    <ImageButton 
+                        Source="connect.png"
+                        Command="{Binding TestConnectionCommand}"
+                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
+                        CornerRadius="8"
+                        HeightRequest="30"
+                        WidthRequest="30"/>
                 </HorizontalStackLayout>
             </Frame>
 

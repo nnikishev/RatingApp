@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="RatingApp.Views.SqlShellPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="SQL Shell"
+             BackgroundColor="{AppThemeBinding Light=#F8FAFC, Dark=#0F1419}">
+    
+    <Grid RowDefinitions="Auto,*,Auto,Auto"
+          Padding="16">
+        
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+            <Label Grid.Column="0"
+                   Text="{Binding DatabaseName, StringFormat='SQL Shell - {0}'}"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#1E293B, Dark=#F1F5F9}"
+                   VerticalOptions="Center"/>
+            
+             <ImageButton Grid.Column="1"
+                    Source="left_arrow.png"
+                    Command="{Binding GoBackCommand}"
+                    BackgroundColor="Transparent"
+                    WidthRequest="26"
+                    HeightRequest="26"
+                    Margin="5,0"/>
+        </Grid>
+
+        <!-- SQL Input -->
+        <Frame Grid.Row="1"
+               BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+               BorderColor="{AppThemeBinding Light=#E2E8F0, Dark=#334155}"
+               CornerRadius="12"
+               Padding="16"
+               HasShadow="True">
+            
+            <Grid RowDefinitions="Auto,*">
+                <Label Grid.Row="0"
+                       Text="SQL Запрос:"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#475569, Dark=#CBD5E1}"
+                       Margin="0,0,0,8"/>
+                
+                <Editor Grid.Row="1"
+                        Text="{Binding SqlQuery}"
+                        Placeholder="Введите SQL запрос..."
+                        AutoSize="TextChanges"
+                        MinimumHeightRequest="120"
+                        FontFamily="Courier New"
+                        FontSize="14"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Light=#1E293B, Dark=#F1F5F9}"/>
+            </Grid>
+        </Frame>
+
+        <!-- Buttons -->
+        <Grid Grid.Row="2" 
+              ColumnDefinitions="*,*"
+              ColumnSpacing="12"
+              Margin="0,16,0,16">
+            
+            <ImageButton Grid.Column="0"
+                    Source="play.png"
+                    Command="{Binding ExecuteQueryCommand}"
+                    IsEnabled="{Binding IsNotExecuting}"
+                    CornerRadius="10"
+                    HeightRequest="40"
+                    WidthRequest="40"
+                    />
+            
+            <ImageButton Grid.Column="1"
+                    Source="broom.png"
+                    Command="{Binding ClearQueryCommand}"
+                    IsEnabled="{Binding IsNotExecuting}"
+                    CornerRadius="10"
+                    HeightRequest="40"
+                    WidthRequest="40"
+                    />
+        </Grid>
+
+        <!-- Results -->
+        <Frame Grid.Row="3"
+               IsVisible="{Binding HasResults}"
+               BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+               BorderColor="{AppThemeBinding Light=#E2E8F0, Dark=#334155}"
+               CornerRadius="12"
+               Padding="0"
+               HasShadow="True">
+            
+            <Grid RowDefinitions="Auto,*,Auto">
+                
+                <!-- Results Header -->
+                <Border Grid.Row="0"
+                        BackgroundColor="{AppThemeBinding Light=#F1F5F9, Dark=#334155}"
+                        Padding="16,12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0"
+                               Text="{Binding ResultsInfo}"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#475569, Dark=#CBD5E1}"/>
+                        
+                         <ImageButton Grid.Column="1"
+                                Source="copy.png"
+                                Command="{Binding CopyResultsCommand}"
+                                BackgroundColor="Transparent"
+                                WidthRequest="40"
+                                HeightRequest="40"/>
+                    </Grid>
+                </Border>
+
+                <!-- Results Data -->
+                <ScrollView Grid.Row="1"
+                            HorizontalScrollBarVisibility="Always"
+                            VerticalScrollBarVisibility="Always"
+                            MaximumHeightRequest="400">
+                    <Label Text="{Binding FormattedResults}"
+                           FontFamily="Courier New"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light=#1E293B, Dark=#F1F5F9}"
+                           LineBreakMode="WordWrap"
+                           Margin="16"/>
+                </ScrollView>
+
+                <!-- Execution Time -->
+                <Border Grid.Row="2"
+                        BackgroundColor="{AppThemeBinding Light=#F8FAFC, Dark=#0F1419}"
+                        Padding="16,8">
+                    <Label Text="{Binding ExecutionTime}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light=#64748B, Dark=#94A3B8}"
+                           HorizontalOptions="End"/>
+                </Border>
+            </Grid>
+        </Frame>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="3"
+                          IsVisible="{Binding IsExecuting}"
+                          IsRunning="{Binding IsExecuting}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center"
+                          Color="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"/>
+
+        <!-- Error Message -->
+        <Frame Grid.Row="3"
+               IsVisible="{Binding HasError}"
+               BackgroundColor="{AppThemeBinding Light=#FEF2F2, Dark=#7F1D1D}"
+               BorderColor="{AppThemeBinding Light=#FECACA, Dark=#EF4444}"
+               CornerRadius="12"
+               Padding="16">
+            <HorizontalStackLayout Spacing="12">
+                <Label Text="❌"
+                       FontSize="16"
+                       VerticalOptions="Center"/>
+                <Label Text="{Binding ErrorMessage}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Light=#DC2626, Dark=#FECACA}"
+                       LineBreakMode="WordWrap"
+                       VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>
