@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using RatingApp.Models;
 using RatingApp.Services;
 using RatingApp.Views;
+using Npgsql;
 
 namespace RatingApp.ViewModels
 {
@@ -71,6 +72,59 @@ namespace RatingApp.ViewModels
                 {
                     await Application.Current.MainPage.DisplayAlert("Ошибка", $"Не удалось открыть страницу редактирования: {ex.Message}", "OK");
                 }
+            }
+        }
+
+        [RelayCommand]
+        private async Task OpenSqlShellAsync(Database database)
+        {
+            if (database == null) return;
+
+            try
+            {
+                // Проверяем подключение перед открытием SQL Shell
+                if (!await TestDatabaseConnection(database))
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Ошибка подключения", 
+                        "Не удалось подключиться к базе данных", 
+                        "OK");
+                    return;
+                }
+
+                // Открываем страницу SQL Shell
+                var sqlShellPage = new SqlShellPage(database);
+                await Navigation.PushAsync(sqlShellPage);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Ошибка", 
+                    $"Не удалось открыть SQL Shell: {ex.Message}", 
+                    "OK");
+            }
+        }
+
+        private async Task<bool> TestDatabaseConnection(Database database)
+        {
+            if (database.Type != DatabaseType.PostgreSQL) 
+                return false; // Пока поддерживаем только PostgreSQL
+
+            NpgsqlConnection connection = null;
+            try
+            {
+                connection = new NpgsqlConnection(database.ConnectionString);
+                await connection.OpenAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                connection?.Close();
+                connection?.Dispose();
             }
         }
 

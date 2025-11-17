@@ -161,16 +161,12 @@ namespace RatingApp.Views
             };
 
             // Иконка фильтра слева
-            var filterButton = new Button
+            var filterButton = new ImageButton
             {
-                Text = column.IsFiltered ? "🔍✅" : "🔍",
-                FontSize = 14,
+                Source = "filter.png",
                 BackgroundColor = Colors.Transparent,
-                TextColor = column.IsFiltered ? 
-                    Color.FromArgb("#007ACC") : 
-                    (Application.Current.RequestedTheme == AppTheme.Dark ? Colors.LightGray : Colors.Gray),
-                HeightRequest = 30,
-                WidthRequest = 30,
+                HeightRequest = 18,
+                WidthRequest = 18,
                 CornerRadius = 15,
                 Padding = 0,
                 Command = ((TablePreviewViewModel)BindingContext).ShowFilterDialogCommand,
@@ -297,119 +293,113 @@ namespace RatingApp.Views
 
 
         private async Task ShowCellValuePopup(string value, int columnIndex, int rowIndex, string columnName)
-{
-    if (string.IsNullOrEmpty(value) || value == "NULL")
-        return;
-
-    var viewModel = BindingContext as TablePreviewViewModel;
-    if (viewModel == null) return;
-
-    // Создаем простую страницу для просмотра
-    var viewPage = new ContentPage
-    {
-        Title = $"{columnName} [Строка {rowIndex + 1}]",
-        BackgroundColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
-            Color.FromArgb("#1A1A1A") : Colors.White
-    };
-
-    var layout = new Grid
-    {
-        RowDefinitions = 
         {
-            new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-            new RowDefinition { Height = GridLength.Auto }
-        },
-        RowSpacing = 15,
-        Padding = new Thickness(20, 10)
-    };
+            if (string.IsNullOrEmpty(value) || value == "NULL")
+                return;
 
-    // Область с текстом и прокруткой
-    var textFrame = new Frame
-    {
-        BackgroundColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
-            Color.FromArgb("#2A2A2A") : Color.FromArgb("#F5F5F5"),
-        BorderColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
-            Color.FromArgb("#404040") : Color.FromArgb("#DDDDDD"),
-        CornerRadius = 8,
-        Padding = 15,
-        HasShadow = true
-    };
+            var viewModel = BindingContext as TablePreviewViewModel;
+            if (viewModel == null) return;
 
-    var scrollView = new ScrollView();
-    var valueLabel = new Label
-    {
-        Text = value,
-        FontSize = 14,
-        FontFamily = "Courier New",
-        TextColor = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black,
-        LineBreakMode = LineBreakMode.WordWrap
-    };
-    
-    scrollView.Content = valueLabel;
-    textFrame.Content = scrollView;
-    Grid.SetRow(textFrame, 0);
+            // Создаем простую страницу для просмотра
+            var viewPage = new ContentPage
+            {
+                Title = $"{columnName} [Строка {rowIndex + 1}]",
+                BackgroundColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
+                    Color.FromArgb("#1A1A1A") : Colors.White
+            };
 
-    // Кнопки внизу
-    var buttonsLayout = new Grid
-    {
-        ColumnDefinitions = 
-        {
-            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-        },
-        ColumnSpacing = 10
-    };
+            var layout = new Grid
+            {
+                RowDefinitions = 
+                {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                    new RowDefinition { Height = GridLength.Auto }
+                },
+                RowSpacing = 15,
+                Padding = new Thickness(20, 10)
+            };
 
-    var copyButton = new Button
-    {
-        Text = "📋 Копировать",
-        BackgroundColor = Color.FromArgb("#007ACC"),
-        TextColor = Colors.White,
-        CornerRadius = 8,
-        HeightRequest = 50,
-        FontSize = 14
-    };
+            // Область с текстом и прокруткой
+            var textFrame = new Frame
+            {
+                BackgroundColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
+                    Color.FromArgb("#2A2A2A") : Color.FromArgb("#F5F5F5"),
+                BorderColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
+                    Color.FromArgb("#404040") : Color.FromArgb("#DDDDDD"),
+                CornerRadius = 8,
+                Padding = 15,
+                HasShadow = true
+            };
 
-    var closeButton = new Button
-    {
-        Text = "Закрыть",
-        BackgroundColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
-            Color.FromArgb("#404040") : Color.FromArgb("#E0E0E0"),
-        TextColor = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black,
-        CornerRadius = 8,
-        HeightRequest = 50,
-        FontSize = 14
-    };
+            var scrollView = new ScrollView();
+            var valueLabel = new Label
+            {
+                Text = value,
+                FontSize = 14,
+                FontFamily = "Courier New",
+                TextColor = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black,
+                LineBreakMode = LineBreakMode.WordWrap
+            };
+            
+            scrollView.Content = valueLabel;
+            textFrame.Content = scrollView;
+            Grid.SetRow(textFrame, 0);
 
-    copyButton.Clicked += async (s, e) => 
-    {
-        await viewModel.CopyToClipboardAsync(value);
-        await DisplayAlert("Успех", "Текст скопирован в буфер обмена", "OK");
-    };
+            // Кнопки внизу
+            var buttonsLayout = new Grid
+            {
+                ColumnDefinitions = 
+                {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                },
+                ColumnSpacing = 10
+            };
 
-    closeButton.Clicked += async (s, e) => await Navigation.PopModalAsync();
+            var copyButton = new ImageButton
+            {
+                Source = "copy.png",
+                CornerRadius = 8,
+                HeightRequest = 40,
+                WidthRequest = 40
+            };
 
-    Grid.SetColumn(copyButton, 0);
-    Grid.SetColumn(closeButton, 1);
-    buttonsLayout.Children.Add(copyButton);
-    buttonsLayout.Children.Add(closeButton);
-    Grid.SetRow(buttonsLayout, 1);
+            var closeButton = new ImageButton
+            {
+                Source = "close.png",
+                CornerRadius = 8,
+                HeightRequest = 40,
+                WidthRequest = 40
+            };
 
-    layout.Children.Add(textFrame);
-    layout.Children.Add(buttonsLayout);
+            copyButton.Clicked += async (s, e) => 
+            {
+                await viewModel.CopyToClipboardAsync(value);
+            };
 
-    viewPage.Content = layout;
+            closeButton.Clicked += async (s, e) => await Navigation.PopModalAsync();
 
-    // Используем NavigationPage для правильного отображения
-    var navPage = new NavigationPage(viewPage)
-    {
-        BarBackgroundColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
-            Color.FromArgb("#2A2A2A") : Color.FromArgb("#F0F0F0"),
-        BarTextColor = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black
-    };
+            Grid.SetColumn(copyButton, 0);
+            Grid.SetColumn(closeButton, 1);
+            buttonsLayout.Children.Add(copyButton);
+            buttonsLayout.Children.Add(closeButton);
+            Grid.SetRow(buttonsLayout, 1);
 
-    await Navigation.PushModalAsync(navPage);
-}
+            layout.Children.Add(textFrame);
+            layout.Children.Add(buttonsLayout);
+
+            viewPage.Content = layout;
+
+            // Используем NavigationPage для правильного отображения
+            var navPage = new NavigationPage(viewPage)
+            {
+                BarBackgroundColor = Application.Current.RequestedTheme == AppTheme.Dark ? 
+                    Color.FromArgb("#2A2A2A") : Color.FromArgb("#F0F0F0"),
+                BarTextColor = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black
+            };
+
+            await Navigation.PushModalAsync(navPage);
+        }
         // private async Task ShowCellValuePopup(string value, int columnIndex, int rowIndex, string columnName)
         // {
         //     if (string.IsNullOrEmpty(value) || value == "NULL")
