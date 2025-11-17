@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="RatingApp.Views.TablePreviewPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Просмотр таблицы"
+             x:Name="ThisPage">
+    
+    <Grid RowDefinitions="Auto,Auto,*,Auto"
+          Padding="10">
+        
+        <!-- Header -->
+        <Grid Grid.Row="0" 
+              ColumnDefinitions="*,Auto,Auto"
+              Margin="0,0,0,5">
+            
+            <Label Grid.Column="0"
+                   Text="{Binding TableData.TableName, StringFormat='Таблица: {0}'}"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"/>
+            
+            <Button Grid.Column="1"
+                    Text="🔄"
+                    FontSize="16"
+                    Command="{Binding RefreshDataCommand}"
+                    IsEnabled="{Binding IsNotLoading}"
+                    BackgroundColor="Transparent"
+                    WidthRequest="40"
+                    Margin="5,0"/>
+            
+            <Button Grid.Column="2"
+                    Text="⬅️"
+                    FontSize="16"
+                    Command="{Binding GoBackCommand}"
+                    BackgroundColor="Transparent"
+                    WidthRequest="40"
+                    Margin="5,0"/>
+        </Grid>
+
+        <!-- Filter Info -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,Auto"
+              Margin="0,0,0,10">
+            
+            <Label Grid.Column="0"
+                   Text="{Binding CurrentFilterInfo}"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light=#0066CC, Dark=#4DA6FF}"
+                   VerticalOptions="Center"
+                   LineBreakMode="TailTruncation"/>
+            
+            <Button Grid.Column="1"
+                    Text="❌ Сбросить фильтры"
+                    FontSize="12"
+                    Command="{Binding ClearFiltersCommand}"
+                    IsEnabled="{Binding IsNotLoading}"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light=#CC0000, Dark=#FF6666}"
+                    Margin="5,0"/>
+        </Grid>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="2"
+                          IsVisible="{Binding TableData.IsLoading}"
+                          IsRunning="{Binding TableData.IsLoading}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center"
+                          Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"/>
+
+        <!-- Table Container -->
+        <Grid Grid.Row="2"
+              IsVisible="{Binding IsNotLoading}">
+            <ScrollView x:Name="MainScrollView"
+                        HorizontalScrollBarVisibility="Always"
+                        VerticalScrollBarVisibility="Always">
+                <StackLayout x:Name="TableContainer"
+                             Spacing="0">
+                    <!-- Table will be generated here programmatically -->
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- Footer Info -->
+        <Frame Grid.Row="3"
+               BorderColor="{AppThemeBinding Light=LightGray, Dark=DarkGray}"
+               BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2A2A2A}"
+               Padding="10,5"
+               HasShadow="False"
+               Margin="0,10,0,0">
+            
+            <Grid ColumnDefinitions="*,*">
+                <Label Grid.Column="0"
+                       Text="{Binding TableData.TotalRows, StringFormat='Всего строк: {0:N0}'}"
+                       FontSize="12"/>
+                
+                <Label Grid.Column="1"
+                       Text="{Binding TableData.Rows.Count, StringFormat='Показано: {0}'}"
+                       FontSize="12"
+                       HorizontalOptions="End"/>
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>
