@@ -26,11 +26,13 @@
   </PropertyGroup>
 
  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+ <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
   <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
 </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Material.Components.Maui" Version="0.2.2-preview" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.111" />
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
     <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.7" />

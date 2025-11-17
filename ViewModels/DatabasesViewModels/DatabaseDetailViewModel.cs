@@ -204,7 +204,7 @@ namespace RatingApp.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine($"POSTGRES_SIMPLE_TABLES_ERROR: {ex.Message}");
                 // Если и это не сработало, возвращаем демо-данные
-                tables = GetDemoTables();
+                tables = new List<TableInfo>{};
             }
 
             return tables;
@@ -270,6 +270,24 @@ namespace RatingApp.ViewModels
                 await CheckDatabaseConnectionAndLoadTables();
             }
         }
+        [RelayCommand]
+        private async Task ViewTableAsync(TableInfo tableInfo)
+        {
+            if (tableInfo == null) return;
+
+            try
+            {
+                var viewModel = new TablePreviewViewModel(_ratingService, Database, tableInfo.Name);
+                var tablePage = new TablePreviewPage(viewModel);
+                await Navigation.PushAsync(tablePage);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ошибка", 
+                    $"Не удалось открыть таблицу: {ex.Message}", "OK");
+            }
+        }
+
 
         [RelayCommand]
         private async Task GoBackAsync()
