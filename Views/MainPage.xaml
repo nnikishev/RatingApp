@@ -81,14 +81,14 @@
                             CornerRadius="10"/>
 
                     
-                    <Button Text="Наборы данных" 
-                            Command="{Binding ShowRatingCommand}"
+                    <!-- <Button Text="Наборы данных" 
+                            Command="{Binding NavigateToDatasetsCommand}"
                             BackgroundColor="#FF3E3EBD"
                             TextColor="White"
                             FontSize="18"
                             HeightRequest="60"
                             CornerRadius="10"/>
-                    
+                     -->
                     <Button Text="Базы данных" 
                             Command="{Binding DatabasesListCommand}"
                             BackgroundColor="#FF3E3EBD"

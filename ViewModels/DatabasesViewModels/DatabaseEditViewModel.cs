@@ -2,15 +2,17 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RatingApp.Models;
 using RatingApp.Services;
+using Npgsql;
+
 
 namespace RatingApp.ViewModels
 {
     public partial class DatabaseEditViewModel : ObservableObject
     {
         private readonly DatabaseContext _databaseContext;
+        [ObservableProperty]
         private readonly Database _originalDatabase;
 
-        [ObservableProperty]
         private string host;
 
         [ObservableProperty]
@@ -111,14 +113,39 @@ namespace RatingApp.ViewModels
 
         private async Task<bool> SimulateConnectionTest()
         {
-            // Заглушка для тестирования подключения
-            await Task.Delay(1000);
-            
-            // Имитация успешного подключения при заполненных полях
-            return !string.IsNullOrWhiteSpace(Host) && 
-                   !string.IsNullOrWhiteSpace(Port) && 
-                   !string.IsNullOrWhiteSpace(User) && 
-                   !string.IsNullOrWhiteSpace(DatabaseName);
+            if (_originalDatabase.Type != DatabaseType.PostgreSQL)
+            {
+                ConnectionStatus = "Тип БД не поддерживается";
+                IsConnected = false;
+                Tables = GetDemoTables();
+                return;
+            }
+
+            NpgsqlConnection connection = null;
+            try
+            {
+                connection = new NpgsqlConnection(_originalDatabase.ConnectionString);
+                await connection.OpenAsync();
+                
+                IsConnected = true;
+                ConnectionStatus = "Подключено";
+
+                _originalDatabase.IsActive = true;
+            }
+            catch (Exception ex)
+            {
+                IsConnected = false;
+                ConnectionStatus = "Отключено";
+                _originalDatabase.IsActive = false;
+                await _ratingService.SaveDatabaseAsync(_originalDatabase);
+                
+                System.Diagnostics.Debug.WriteLine($"DATABASE_CONNECTION_ERROR: {ex.Message}");
+            }
+            finally
+            {
+                connection?.Close();
+                connection?.Dispose();
+            }
         }
 
         [RelayCommand]
