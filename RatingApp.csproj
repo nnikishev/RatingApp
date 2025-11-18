@@ -64,6 +64,10 @@
     <MauiImage Include="Resources\Icons\connect.png" />
     <MauiImage Include="Resources\Icons\close.png" />
     <MauiImage Include="Resources\Icons\copy.png" />
+    <MauiImage Include="Resources\Icons\host.png" />
+    <MauiImage Include="Resources\Icons\postgre.png" />
+    <MauiImage Include="Resources\Icons\database.png" />
+    <MauiImage Include="Resources\Icons\calendar.png" />
     <MauiImage Include="Resources\Backgrounds\login_background.jpg" />
     <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.69" Color="#512BD4" />
   </ItemGroup>

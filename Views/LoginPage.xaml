@@ -13,17 +13,17 @@
                Opacity="0.8"/>
         
         <!-- Overlay -->
-        <BoxView Color="Black" Opacity="0.5"/>
+        <BoxView Color="Black" Opacity="0.2"/>
         
         <!-- Login Form -->
-        <ScrollView>
+        <ScrollView >
             <VerticalStackLayout Spacing="25" 
                                Padding="30"
                                VerticalOptions="Center">
                 
                 <!-- App Logo/Title -->
                 <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
-                    <Label Text="App" 
+                    <Label Text="Бизнес-анализ" 
                            FontSize="32" 
                            FontAttributes="Bold" 
                            TextColor="White"

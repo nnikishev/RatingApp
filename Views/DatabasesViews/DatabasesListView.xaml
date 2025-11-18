@@ -16,6 +16,7 @@
             <converters:BoolToStatusPillConverter x:Key="BoolToStatusPillConverter"/>
             <converters:BoolToStatusTextConverter x:Key="BoolToStatusTextConverter"/>
             <converters:BoolToStatusTextStyleConverter x:Key="BoolToStatusTextStyleConverter"/>
+            <converters:TypeToIconConverter x:Key="TypeToIconConverter"/>
             
             <!-- Палитра -->
             <Color x:Key="DBL.PageBgColor">#F4F6FB</Color>
@@ -224,24 +225,25 @@
                                                 AlignItems="Center" 
                                                 JustifyContent="Start">
                                         <Border Style="{StaticResource DBL.Chip}" Margin="0,0,10,0">
+
+
                                             <HorizontalStackLayout Spacing="6">
-                                                <Image 
-                                            Source="{Binding IsActive, Converter={converters:BoolToStatusIconConverter}}"
-                                            WidthRequest="20"
-                                            HeightRequest="20"
-                                            VerticalOptions="Center"/>  
+                                                <Image Source="{Binding Type, Converter={StaticResource TypeToIconConverter}}"
+                                                    WidthRequest="16"
+                                                    HeightRequest="16"
+                                                    VerticalOptions="Center"/>
                                                 <Label Text="{Binding Type}" Style="{StaticResource DBL.ChipTextStyle}" />
                                             </HorizontalStackLayout>
                                         </Border>
 
                                         <HorizontalStackLayout Spacing="6" Margin="0,0,16,0">
-                                            <Label Text="⎈" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
+                                            <Image Source="host.png" WidthRequest="14"/>
                                             <Label Text="{Binding Host, StringFormat='{0}:{1}'}" 
                                                    Style="{StaticResource DBL.InfoText}" />
                                         </HorizontalStackLayout>
 
                                         <HorizontalStackLayout Spacing="6">
-                                            <Label Text="📅" FontSize="12" TextColor="{StaticResource DBL.MutedText}" VerticalTextAlignment="Center" />
+                                            <Image Source="calendar.png" WidthRequest="14"/>
                                             <Label Text="{Binding CreatedAt, StringFormat='{0:yyyy-MM-dd}'}" 
                                                    Style="{StaticResource DBL.InfoText}" />
                                         </HorizontalStackLayout>
@@ -249,6 +251,16 @@
 
                                     <!-- Статус подключения -->
                                     <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*,Auto">
+                                         <HorizontalStackLayout Spacing="6">
+                                         <Label Text="Статус:" Style="{StaticResource DBL.InfoText}" VerticalTextAlignment="Center"/>
+                                         <Image Grid.Column="0" Margin="3"
+                                            Source="{Binding IsActive, Converter={converters:BoolToStatusIconConverter}}"
+                                            WidthRequest="20"
+                                            HeightRequest="20"
+                                            VerticalOptions="Center"/> 
+                                            
+                                        </HorizontalStackLayout>
+                                                
                                         <Grid Grid.Column="1" />
                                         
                                         <Label Grid.Column="2" 
@@ -278,6 +290,7 @@
                            HeightRequest="26"/>
             </Grid>
         </Border>
+        
 
     </AbsoluteLayout>
 </ContentPage>

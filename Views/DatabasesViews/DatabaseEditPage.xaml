@@ -97,24 +97,33 @@
 
             <!-- Тестирование подключения -->
             <Frame BackgroundColor="#F8F9FA" CornerRadius="10" Padding="15">
-                <HorizontalStackLayout Spacing="15">
-                    <CheckBox IsChecked="{Binding IsConnectionSuccessful}"
-                              IsEnabled="False"
-                              Color="#28A745"
-                              VerticalOptions="Center"/>
+                <Grid Grid.Row="2" 
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="12"
+                    Margin="0,16,0,16">
+                        <HorizontalStackLayout Grid.Column="0">
+                        <CheckBox IsChecked="{Binding IsConnectionSuccessful}"
+                                IsEnabled="False"
+                                Color="#28A745"
+                                VerticalOptions="Center"/>
+                        
+                        <Label Text="Подключение    " 
+                            FontSize="14"
+                            VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
                     
-                    <Label Text="Подключение    " 
-                           FontSize="14"
-                           VerticalOptions="Center"/>
                     
-                    <ImageButton 
+                     <ImageButton 
+                        Grid.Column="1" 
                         Source="connect.png"
                         Command="{Binding TestConnectionCommand}"
                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
                         CornerRadius="8"
                         HeightRequest="30"
-                        WidthRequest="30"/>
-                </HorizontalStackLayout>
+                        WidthRequest="30"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+                </Grid>
             </Frame>
 
             <!-- Описание -->
