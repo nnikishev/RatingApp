@@ -68,8 +68,17 @@
                     HeightRequest="40"
                     WidthRequest="40"
                     />
+
+           <ImageButton Grid.Column="1"
+                    Source="save.png"
+                    Command="{Binding SaveAsDatasetCommand}"
+                    IsEnabled="{Binding CanSaveDataset}"
+                    CornerRadius="10"
+                    HeightRequest="40"
+                    WidthRequest="40"
+                    />
             
-            <ImageButton Grid.Column="1"
+            <ImageButton Grid.Column="2"
                     Source="broom.png"
                     Command="{Binding ClearQueryCommand}"
                     IsEnabled="{Binding IsNotExecuting}"

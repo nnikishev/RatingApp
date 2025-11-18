@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RatingApp.Models;
+using RatingApp.Services;
 using Npgsql;
 using System.Data;
 using System.Diagnostics;
@@ -11,6 +12,7 @@ namespace RatingApp.ViewModels
     public partial class SqlShellViewModel : ObservableObject
     {
         private readonly Database _database;
+        private readonly IDatasetService _datasetService;
 
         [ObservableProperty]
         private string sqlQuery = string.Empty;
@@ -118,6 +120,79 @@ namespace RatingApp.ViewModels
             {
                 await Clipboard.Default.SetTextAsync(FormattedResults);
                 await Application.Current.MainPage.DisplayAlert("Успех", "Результаты скопированы", "OK");
+            }
+        }
+
+         [RelayCommand]
+        private async Task SaveAsDatasetAsync()
+        {
+            if (string.IsNullOrWhiteSpace(SqlQuery))
+            {
+                await Application.Current.MainPage.DisplayAlert("Ошибка", "Нет SQL запроса для сохранения", "OK");
+                return;
+            }
+
+            // Запрашиваем название набора
+            var datasetName = await Application.Current.MainPage.DisplayPromptAsync(
+                "Сохранение набора данных",
+                "Введите название для набора данных:",
+                "Сохранить",
+                "Отмена",
+                "Новый набор данных",
+                -1,
+                Keyboard.Text,
+                "Новый набор данных");
+
+            if (string.IsNullOrWhiteSpace(datasetName))
+                return;
+
+            // Запрашиваем описание (опционально)
+            var datasetDescription = await Application.Current.MainPage.DisplayPromptAsync(
+                "Описание набора данных",
+                "Введите описание (необязательно):",
+                "Сохранить",
+                "Пропустить",
+                "",
+                -1,
+                Keyboard.Text,
+                "");
+
+            try
+            {
+                // Создаем новый набор данных
+                var dataset = new Dataset
+                {
+                    Name = datasetName.Trim(),
+                    Description = datasetDescription?.Trim() ?? string.Empty,
+                    SqlQuery = SqlQuery.Trim(),
+                    DatabaseId = _database.Id,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                };
+
+                var result = await _datasetService.SaveDatasetAsync(dataset);
+                
+                if (result > 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Успех", 
+                        $"Набор данных \"{dataset.Name}\" сохранен", 
+                        "OK");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Ошибка", 
+                        "Не удалось сохранить набор данных", 
+                        "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Ошибка", 
+                    $"Не удалось сохранить набор данных: {ex.Message}", 
+                    "OK");
             }
         }
 

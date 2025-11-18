@@ -108,7 +108,7 @@ namespace RatingApp.Models
 
                 // Создаем все таблицы
                 await _database.CreateTableAsync<Database>();
-                await _database.CreateTableAsync<Source>();
+                await _database.CreateTableAsync<Dataset>();
                 await _database.CreateTableAsync<Chart>();
                 await _database.CreateTableAsync<Dashboard>();
                 
@@ -223,31 +223,31 @@ namespace RatingApp.Models
 
         // Специфические методы для удобства
 
-        public async Task<List<Source>> GetSourcesByDatabaseIdAsync(int databaseId)
+        public async Task<List<Dataset>> GetDatasetsByDatabaseIdAsync(int databaseId)
         {
             try
             {
-                if (!_isInitialized) return new List<Source>();
+                if (!_isInitialized) return new List<Dataset>();
 
-                return await _database.Table<Source>()
+                return await _database.Table<Dataset>()
                     .Where(s => s.DatabaseId == databaseId)
                     .ToListAsync();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"DATABASE_GET_SOURCES_ERROR: {ex.Message}");
-                return new List<Source>();
+                Debug.WriteLine($"DATABASE_GET_DatasetS_ERROR: {ex.Message}");
+                return new List<Dataset>();
             }
         }
 
-        public async Task<List<Chart>> GetChartsBySourceIdAsync(int sourceId)
+        public async Task<List<Chart>> GetChartsByDatasetIdAsync(int DatasetId)
         {
             try
             {
                 if (!_isInitialized) return new List<Chart>();
 
                 return await _database.Table<Chart>()
-                    .Where(c => c.SourceId == sourceId)
+                    .Where(c => c.DatasetId == DatasetId)
                     .ToListAsync();
             }
             catch (Exception ex)

@@ -32,8 +32,8 @@ namespace RatingApp.ViewModels
                 // Загружаем количество источников для каждой БД
                 foreach (var db in Databases)
                 {
-                    var sources = await _databaseContext.GetSourcesByDatabaseIdAsync(db.Id);
-                    db.SourcesCount = sources?.Count ?? 0;
+                    var Datasets = await _databaseContext.GetDatasetsByDatabaseIdAsync(db.Id);
+                    db.DatasetsCount = Datasets?.Count ?? 0;
                 }
                 
                 OnPropertyChanged(nameof(Databases));
@@ -143,10 +143,10 @@ namespace RatingApp.ViewModels
                 try
                 {
                     // Удаляем связанные источники сначала
-                    var sources = await _databaseContext.GetSourcesByDatabaseIdAsync(database.Id);
-                    foreach (var source in sources)
+                    var Datasets = await _databaseContext.GetDatasetsByDatabaseIdAsync(database.Id);
+                    foreach (var Dataset in Datasets)
                     {
-                        await _databaseContext.DeleteAsync(source);
+                        await _databaseContext.DeleteAsync(Dataset);
                     }
 
                     // Удаляем саму базу данных

@@ -108,17 +108,12 @@ namespace RatingApp.ViewModels
         [RelayCommand]
         private async Task DatasetsAsync()
         {
-            try
-            {
-                // Здесь будет переход к наборам данных
-                await Application.Current.MainPage.DisplayAlert("Информация", 
-                    "Раздел наборов данных в разработке", "OK");
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Ошибка", 
-                    $"Не удалось открыть наборы данных: {ex.Message}", "OK");
-            }
+            var datasetsPage = new DatasetsListPage(
+                new DatasetsListViewModel(
+                    ServiceProvider.GetService<IDatasetService>(),
+                    ServiceProvider.GetService<IRatingService>()));
+
+            await Application.Current.MainPage.Navigation.PushAsync(datasetsPage);
         }
 
         [RelayCommand]
