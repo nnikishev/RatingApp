@@ -243,11 +243,7 @@ namespace RatingApp.ViewModels
 
                 await CheckDatabaseConnectionAndLoadTables();
 
-                if (IsConnected)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Успех", "Подключение успешно!", "OK");
-                }
-                else
+                if (!IsConnected)
                 {
                     await Application.Current.MainPage.DisplayAlert("Ошибка", "Не удалось подключиться к базе данных", "OK");
                 }

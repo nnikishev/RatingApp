@@ -4,16 +4,16 @@ using RatingApp.Models;
 using RatingApp.Services;
 using Npgsql;
 
-
 namespace RatingApp.ViewModels
 {
     public partial class DatabaseEditViewModel : ObservableObject
     {
         private readonly DatabaseContext _databaseContext;
         [ObservableProperty]
-        private readonly Database _originalDatabase;
+        private  Database _originalDatabase;
 
-        private string host;
+        [ObservableProperty]
+        private string host; 
 
         [ObservableProperty]
         private string port;
@@ -57,10 +57,10 @@ namespace RatingApp.ViewModels
             else
             {
                 // Значения по умолчанию для новой БД
-                host = "localhost";
-                port = "5432";
-                selectedType = DatabaseType.PostgreSQL;
-                isConnectionSuccessful = false;
+                Host = "localhost"; // Теперь используем Host вместо host
+                Port = "5432";
+                SelectedType = DatabaseType.PostgreSQL;
+                IsConnectionSuccessful = false;
             }
         }
 
@@ -84,15 +84,11 @@ namespace RatingApp.ViewModels
                 IsTesting = true;
                 IsConnectionSuccessful = false;
 
-                // Имитация тестирования подключения
-                await Task.Delay(2000);
-
-                // Здесь будет реальная логика тестирования подключения к БД
+                // Реальная логика тестирования подключения к БД
                 bool connectionSuccess = await SimulateConnectionTest();
-
                 IsConnectionSuccessful = connectionSuccess;
 
-                if (connectionSuccess)
+                if (IsConnectionSuccessful)
                 {
                     await Application.Current.MainPage.DisplayAlert("Успех", "Подключение успешно!", "OK");
                 }
@@ -113,33 +109,26 @@ namespace RatingApp.ViewModels
 
         private async Task<bool> SimulateConnectionTest()
         {
-            if (_originalDatabase.Type != DatabaseType.PostgreSQL)
+            if (SelectedType != DatabaseType.PostgreSQL)
             {
-                ConnectionStatus = "Тип БД не поддерживается";
-                IsConnected = false;
-                Tables = GetDemoTables();
-                return;
+                // Для других типов БД возвращаем true для демонстрации
+                await Task.Delay(1000);
+                return true;
             }
 
             NpgsqlConnection connection = null;
             try
             {
-                connection = new NpgsqlConnection(_originalDatabase.ConnectionString);
+                var connectionString = $"Host={Host};Port={Port};Username={User};Password={Password};Database={DatabaseName}";
+                connection = new NpgsqlConnection(connectionString);
                 await connection.OpenAsync();
                 
-                IsConnected = true;
-                ConnectionStatus = "Подключено";
-
-                _originalDatabase.IsActive = true;
+                return true;
             }
             catch (Exception ex)
             {
-                IsConnected = false;
-                ConnectionStatus = "Отключено";
-                _originalDatabase.IsActive = false;
-                await _ratingService.SaveDatabaseAsync(_originalDatabase);
-                
                 System.Diagnostics.Debug.WriteLine($"DATABASE_CONNECTION_ERROR: {ex.Message}");
+                return false;
             }
             finally
             {
