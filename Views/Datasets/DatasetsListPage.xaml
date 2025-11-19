@@ -84,8 +84,8 @@
                                     <!-- База данных -->
                                     <Grid Grid.Row="2" Grid.ColumnSpan="2">
                                         <HorizontalStackLayout Spacing="6">
-                                            <Label Text="📊" FontSize="12" TextColor="#94A3B8" />
-                                            <Label Text="{Binding Database.Name, StringFormat='База: {0}'}" 
+                                            <Image Source="database.png" WidthRequest="14"/>
+                                            <Label Text="{Binding Database.Name, StringFormat='Database: {0}'}" 
                                                    FontSize="12"
                                                    TextColor="#94A3B8" />
                                         </HorizontalStackLayout>
@@ -94,8 +94,8 @@
                                     <!-- SQL запрос (урезанный) -->
                                     <Grid Grid.Row="3" Grid.ColumnSpan="2">
                                         <HorizontalStackLayout Spacing="6">
-                                            <Label Text="📝" FontSize="12" TextColor="#94A3B8" />
-                                            <Label Text="{Binding SqlQuery}" 
+                                            <Image Source="query.png" WidthRequest="14"/>
+                                            <Label Text="{Binding SqlQuery, StringFormat='Query: {0}'}" 
                                                    FontSize="12"
                                                    TextColor="#94A3B8"
                                                    LineBreakMode="TailTruncation"
@@ -106,9 +106,10 @@
                                     <!-- Дата создания и кнопка -->
                                     <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="*,Auto">
                                         <HorizontalStackLayout Grid.Column="0" Spacing="6">
-                                            <Label Text="📅" FontSize="12" TextColor="#94A3B8" />
-                                            <Label Text="{Binding CreatedAt, StringFormat='Создан: {0:dd.MM.yyyy HH:mm}'}" 
+                                            <Image Source="calendar.png" WidthRequest="14"/>
+                                            <Label Text="{Binding CreatedAt, StringFormat='Created at: {0:dd.MM.yyyy HH:mm}'}" 
                                                    FontSize="12"
+                                                   VerticalTextAlignment="Center"
                                                    TextColor="#94A3B8" />
                                         </HorizontalStackLayout>
                                         
@@ -154,8 +155,8 @@
                 <ImageButton Source="add.png"
                            Command="{Binding AddDatasetCommand}"
                            BackgroundColor="Transparent"
-                           WidthRequest="56"
-                           HeightRequest="56"/>
+                           WidthRequest="40"
+                           HeightRequest="40"/>
             </Grid>
         </Border>
 

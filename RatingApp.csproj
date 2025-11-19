@@ -68,6 +68,7 @@
     <MauiImage Include="Resources\Icons\database.png" />
     <MauiImage Include="Resources\Icons\calendar.png" />
     <MauiImage Include="Resources\Icons\save.png" />
+    <MauiImage Include="Resources\Icons\query.png" />
     <MauiImage Include="Resources\Backgrounds\login_background.jpg" />
     <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.69" Color="#512BD4" />
   </ItemGroup>
