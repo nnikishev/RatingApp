@@ -14,7 +14,7 @@ namespace RatingApp.Models
         public string Description { get; set; }
 
         [Ignore]
-        public int SourcesCount { get; set; }
+        public int DatasetsCount { get; set; }
 
         [Ignore]
         public string ConnectionString 

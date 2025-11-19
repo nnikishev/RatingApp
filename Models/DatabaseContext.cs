@@ -108,7 +108,7 @@ namespace RatingApp.Models
 
                 // Создаем все таблицы
                 await _database.CreateTableAsync<Database>();
-                await _database.CreateTableAsync<Source>();
+                await _database.CreateTableAsync<Dataset>();
                 await _database.CreateTableAsync<Chart>();
                 await _database.CreateTableAsync<Dashboard>();
                 
@@ -223,31 +223,31 @@ namespace RatingApp.Models
 
         // Специфические методы для удобства
 
-        public async Task<List<Source>> GetSourcesByDatabaseIdAsync(int databaseId)
+        public async Task<List<Dataset>> GetDatasetsByDatabaseIdAsync(int databaseId)
         {
             try
             {
-                if (!_isInitialized) return new List<Source>();
+                if (!_isInitialized) return new List<Dataset>();
 
-                return await _database.Table<Source>()
+                return await _database.Table<Dataset>()
                     .Where(s => s.DatabaseId == databaseId)
                     .ToListAsync();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"DATABASE_GET_SOURCES_ERROR: {ex.Message}");
-                return new List<Source>();
+                Debug.WriteLine($"DATABASE_GET_DatasetS_ERROR: {ex.Message}");
+                return new List<Dataset>();
             }
         }
 
-        public async Task<List<Chart>> GetChartsBySourceIdAsync(int sourceId)
+        public async Task<List<Chart>> GetChartsByDatasetIdAsync(int DatasetId)
         {
             try
             {
                 if (!_isInitialized) return new List<Chart>();
 
                 return await _database.Table<Chart>()
-                    .Where(c => c.SourceId == sourceId)
+                    .Where(c => c.DatasetId == DatasetId)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -272,6 +272,88 @@ namespace RatingApp.Models
             {
                 Debug.WriteLine($"DATABASE_STATUS_ERROR: {ex.Message}");
                 return false;
+            }
+        }
+
+        // specific datasets
+        // Специфические методы для Dataset
+        public async Task<List<Dataset>> GetDatasetsAsync()
+        {
+            try
+            {
+                if (!_isInitialized) return new List<Dataset>();
+
+                return await _database.Table<Dataset>()
+                    .OrderByDescending(d => d.UpdatedAt)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_GET_DATASETS_ERROR: {ex.Message}");
+                return new List<Dataset>();
+            }
+        }
+
+        public async Task<Dataset> GetDatasetAsync(int id)
+        {
+            try
+            {
+                if (!_isInitialized) return null;
+
+                return await _database.Table<Dataset>()
+                    .Where(d => d.Id == id)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_GET_DATASET_ERROR: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<int> SaveDatasetAsync(Dataset dataset)
+        {
+            try
+            {
+                if (!_isInitialized) return 0;
+
+                dataset.UpdatedAt = DateTime.Now;
+                
+                if (dataset.Id != 0)
+                {
+                    var result = await _database.UpdateAsync(dataset);
+                    Debug.WriteLine($"DATABASE_SAVE: Updated Dataset {dataset.Name}");
+                    return result;
+                }
+                else
+                {
+                    dataset.CreatedAt = DateTime.Now;
+                    var result = await _database.InsertAsync(dataset);
+                    Debug.WriteLine($"DATABASE_SAVE: Inserted Dataset {dataset.Name}");
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_SAVE_DATASET_ERROR: {ex.Message}");
+                return 0;
+            }
+        }
+
+        public async Task<int> DeleteDatasetAsync(Dataset dataset)
+        {
+            try
+            {
+                if (!_isInitialized) return 0;
+
+                var result = await _database.DeleteAsync(dataset);
+                Debug.WriteLine($"DATABASE_DELETE: Deleted Dataset {dataset.Name}");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_DELETE_DATASET_ERROR: {ex.Message}");
+                return 0;
             }
         }
     }

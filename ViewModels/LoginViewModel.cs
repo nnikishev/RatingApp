@@ -10,6 +10,7 @@ namespace RatingApp.ViewModels
     {
         private readonly IAuthService _authService;
         private readonly IRatingService _ratingService;
+        private readonly IDatasetService _datasetService;
         private readonly DatabaseContext _databaseContext;
 
         [ObservableProperty]
@@ -24,11 +25,16 @@ namespace RatingApp.ViewModels
         [ObservableProperty]
         private bool _isLoginFailed = false;
 
-        public LoginViewModel(IAuthService authService, IRatingService ratingService, DatabaseContext databaseContext)
+        public LoginViewModel(
+            IAuthService authService, 
+            IRatingService ratingService, 
+            DatabaseContext databaseContext,
+            IDatasetService datasetService)
         {
             _authService = authService;
             _ratingService = ratingService;
             _databaseContext = databaseContext;
+            _datasetService = datasetService;
             Title = "Login";
         }
 
@@ -67,7 +73,7 @@ namespace RatingApp.ViewModels
                     System.Diagnostics.Debug.WriteLine($"LOGIN_SUCCESS: User {Username} logged in successfully");
                     
                     // Navigate to main app
-                    Application.Current.MainPage = new NavigationPage(new MainPage(_ratingService, _authService, _databaseContext));
+                    Application.Current.MainPage = new NavigationPage(new MainPage(_ratingService, _authService, _databaseContext, _datasetService));
                 }
                 else
                 {

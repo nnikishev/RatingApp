@@ -11,12 +11,19 @@ namespace RatingApp.ViewModels
         private readonly IRatingService _ratingService;
         private readonly IAuthService _authService;
         private readonly DatabaseContext _databaseContext;
+        private readonly IDatasetService _datasetService;
 
-        public MainViewModel(IRatingService ratingService, IAuthService authService, DatabaseContext databaseContext)
+        public MainViewModel(
+            IRatingService ratingService, 
+            IAuthService authService, 
+            DatabaseContext databaseContext, 
+            IDatasetService datasetService
+            )
         {
             _ratingService = ratingService;
             _authService = authService;
             _databaseContext = databaseContext;
+            _datasetService = datasetService;
         }
 
         [RelayCommand]
@@ -34,7 +41,7 @@ namespace RatingApp.ViewModels
                     await _authService.LogoutAsync();
 
                     // Navigate back to login page
-                    Application.Current.MainPage = new NavigationPage(new LoginPage(_authService, _ratingService, _databaseContext));
+                    Application.Current.MainPage = new NavigationPage(new LoginPage(_authService, _ratingService, _databaseContext, _datasetService));
                 }
             }
             catch (Exception ex)
@@ -72,7 +79,7 @@ namespace RatingApp.ViewModels
         {
             try
             {
-                var listDatabases = new DatabasesListPage(_databaseContext, _ratingService);
+                var listDatabases = new DatabasesListPage(_databaseContext, _ratingService, _datasetService);
                 if (Application.Current?.MainPage is NavigationPage navPage)
                 {
                     await navPage.PushAsync(listDatabases);
@@ -106,19 +113,14 @@ namespace RatingApp.ViewModels
         }
 
         [RelayCommand]
-        private async Task DatasetsAsync()
+        private async Task NavigateToDatasetsAsync()
         {
-            try
-            {
-                // Здесь будет переход к наборам данных
-                await Application.Current.MainPage.DisplayAlert("Информация", 
-                    "Раздел наборов данных в разработке", "OK");
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Ошибка", 
-                    $"Не удалось открыть наборы данных: {ex.Message}", "OK");
-            }
+            var datasetsPage = new DatasetsListPage(
+                new DatasetsListViewModel(
+                    _datasetService,
+                    _ratingService));
+
+            await Application.Current.MainPage.Navigation.PushAsync(datasetsPage);
         }
 
         [RelayCommand]

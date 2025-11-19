@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="RatingApp.Views.DatasetsListPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             xmlns:models="clr-namespace:RatingApp.Models"
+             xmlns:local="clr-namespace:RatingApp.Views"
+             Title="Наборы данных"
+             BackgroundColor="#F4F6FB"
+             Padding="20,16">
+
+    <AbsoluteLayout>
+
+        <!-- Контент -->
+        <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    AbsoluteLayout.LayoutFlags="All">
+            <VerticalStackLayout Spacing="16">
+
+                <!-- Заголовок -->
+                <Label Text="Наборы данных" 
+                       FontSize="32" 
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+                
+                <Label Text="Управление SQL запросами и наборами данных" 
+                       FontSize="14"
+                       TextColor="#6B7280" />
+
+                <!-- Список наборов -->
+                <CollectionView ItemsSource="{Binding Datasets}"
+                              EmptyView="Нет созданных наборов данных">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Dataset">
+                            <Frame BackgroundColor="White"
+                                   CornerRadius="16"
+                                   HasShadow="True"
+                                   Padding="16"
+                                   Margin="0,10">
+                                
+                                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                                      ColumnDefinitions="*,Auto"
+                                      ColumnSpacing="8" 
+                                      RowSpacing="10">
+                                    
+                                    <!-- Заголовок и кнопки -->
+                                    <Grid Grid.Row="0" Grid.ColumnSpan="2" 
+                                          ColumnDefinitions="*,Auto,Auto"
+                                          ColumnSpacing="8">
+                                        
+                                        <Label Grid.Column="0" 
+                                               Text="{Binding Name}" 
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               TextColor="#111827"
+                                               VerticalOptions="Center"/>
+                                        
+                                        <!-- Кнопка редактирования -->
+                                        <ImageButton Grid.Column="1"
+                                                   Source="edit.png"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatasetsListPage}}, Path=BindingContext.EditDatasetCommand}"
+                                                   CommandParameter="{Binding .}"
+                                                   BackgroundColor="Transparent"
+                                                   WidthRequest="24"
+                                                   HeightRequest="24"/>
+                                        
+                                        <!-- Кнопка удаления -->
+                                        <ImageButton Grid.Column="2"
+                                                   Source="delete.png"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatasetsListPage}}, Path=BindingContext.DeleteDatasetCommand}"
+                                                   CommandParameter="{Binding .}"
+                                                   BackgroundColor="Transparent"
+                                                   WidthRequest="24"
+                                                   HeightRequest="24"/>
+                                    </Grid>
+
+                                    <!-- Описание -->
+                                    <Label Grid.Row="1" Grid.ColumnSpan="2"
+                                           Text="{Binding Description}"
+                                           FontSize="13"
+                                           TextColor="#6B7280"
+                                           LineBreakMode="WordWrap"
+                                           MaxLines="2"/>
+
+                                    <!-- База данных -->
+                                    <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="database.png" WidthRequest="14"/>
+                                            <Label Text="{Binding Database.Name, StringFormat='Database: {0}'}" 
+                                                   FontSize="12"
+                                                   TextColor="#94A3B8" />
+                                        </HorizontalStackLayout>
+                                    </Grid>
+
+                                    <!-- SQL запрос (урезанный) -->
+                                    <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="query.png" WidthRequest="14"/>
+                                            <Label Text="{Binding SqlQuery, StringFormat='Query: {0}'}" 
+                                                   FontSize="12"
+                                                   TextColor="#94A3B8"
+                                                   LineBreakMode="TailTruncation"
+                                                   MaxLines="1"/>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+
+                                    <!-- Дата создания и кнопка -->
+                                    <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="*,Auto">
+                                        <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                                            <Image Source="calendar.png" WidthRequest="14"/>
+                                            <Label Text="{Binding CreatedAt, StringFormat='Created at: {0:dd.MM.yyyy HH:mm}'}" 
+                                                   FontSize="12"
+                                                   VerticalTextAlignment="Center"
+                                                   TextColor="#94A3B8" />
+                                        </HorizontalStackLayout>
+                                        
+                                        <Button Grid.Column="1"
+                                                Text="Просмотреть"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:DatasetsListPage}}, Path=BindingContext.ViewDatasetCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="#3B82F6"
+                                                TextColor="White"
+                                                CornerRadius="8"
+                                                HeightRequest="30"
+                                                FontSize="12"
+                                                Padding="10,0"/>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <BoxView HeightRequest="24" Opacity="0" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- FAB "+" -->
+        <Border
+            AbsoluteLayout.LayoutBounds="1,0,56,56"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            StrokeThickness="0">
+            <!-- <Border.StrokeShape>
+                <shapes:RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#8459FF" Offset="0.0" />
+                    <GradientStop Color="#6A31FF" Offset="1.0" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Shadow>
+                <Shadow Brush="#33000000" Offset="0,6" Radius="16" Opacity="0.6" />
+            </Border.Shadow> -->
+            <Grid>
+                <ImageButton Source="add.png"
+                           Command="{Binding AddDatasetCommand}"
+                           BackgroundColor="Transparent"
+                           WidthRequest="40"
+                           HeightRequest="40"/>
+            </Grid>
+        </Border>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+                          AbsoluteLayout.LayoutFlags="PositionProportional"
+                          IsVisible="{Binding IsLoading}"
+                          IsRunning="{Binding IsLoading}"
+                          Color="#3B82F6"
+                          Scale="1.5"/>
+
+    </AbsoluteLayout>
+</ContentPage>

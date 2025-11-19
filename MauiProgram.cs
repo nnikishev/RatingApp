@@ -22,6 +22,7 @@ namespace RatingApp
                 builder.Services.AddSingleton<DatabaseContext>();
                 builder.Services.AddSingleton<IAuthService, AuthService>();
                 builder.Services.AddSingleton<IRatingService, RatingService>();
+                builder.Services.AddSingleton<IDatasetService, DatasetService>();
                 // Register converters if needed
                 builder.Services.AddSingleton<Converters.RatingToColorConverter>();
                 builder.Services.AddSingleton<Converters.EditSaveConverter>();
@@ -36,6 +37,7 @@ namespace RatingApp
                 builder.Services.AddTransient<RatingDetailViewModel>();
                 builder.Services.AddTransient<DatabasesListViewModel>();
                 builder.Services.AddTransient<DatabaseEditViewModel>();
+                builder.Services.AddTransient<DatasetsListViewModel>();
                 // Register Views
                 builder.Services.AddTransient<MainPage>();
                 builder.Services.AddTransient<LoginPage>();
@@ -44,6 +46,7 @@ namespace RatingApp
                 builder.Services.AddTransient<RatingFormPage>();
                 builder.Services.AddTransient<DatabasesListPage>();
                 builder.Services.AddTransient<DatabaseEditPage>();
+                builder.Services.AddTransient<DatasetsListPage>();
 
                 
                 return builder.Build();

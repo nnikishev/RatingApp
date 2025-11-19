@@ -6,10 +6,13 @@ namespace RatingApp.Views
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage(IRatingService ratingService, IAuthService authService, DatabaseContext databaseContext)
+        public MainPage(IRatingService ratingService, 
+        IAuthService authService, 
+        DatabaseContext databaseContext, 
+        IDatasetService datasetService)
         {
             InitializeComponent();
-            BindingContext = new MainViewModel(ratingService, authService, databaseContext);
+            BindingContext = new MainViewModel(ratingService, authService, databaseContext, datasetService);
         }
     }
 }

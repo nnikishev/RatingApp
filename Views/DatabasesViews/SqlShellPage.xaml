@@ -76,6 +76,7 @@
                     CornerRadius="10"
                     HeightRequest="40"
                     WidthRequest="40"
+                    Margin="40"
                     />
         </Grid>
 
@@ -95,18 +96,28 @@
                         BackgroundColor="{AppThemeBinding Light=#F1F5F9, Dark=#334155}"
                         Padding="16,12">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Grid.Column="0"
+                            <Label Grid.Column="0"
                                Text="{Binding ResultsInfo}"
                                FontSize="14"
                                FontAttributes="Bold"
                                TextColor="{AppThemeBinding Light=#475569, Dark=#CBD5E1}"/>
-                        
-                         <ImageButton Grid.Column="1"
+                         <HorizontalStackLayout Spacing="12" Grid.Column="1">
+                            <ImageButton 
                                 Source="copy.png"
                                 Command="{Binding CopyResultsCommand}"
                                 BackgroundColor="Transparent"
                                 WidthRequest="40"
                                 HeightRequest="40"/>
+                            <ImageButton 
+                            
+                                Source="save.png"
+                                Command="{Binding SaveAsDatasetCommand}"
+                                IsEnabled="{Binding CanSaveDataset}"
+                                CornerRadius="10"
+                                HeightRequest="40"
+                                WidthRequest="40"
+                                />
+                         </HorizontalStackLayout>
                     </Grid>
                 </Border>
 

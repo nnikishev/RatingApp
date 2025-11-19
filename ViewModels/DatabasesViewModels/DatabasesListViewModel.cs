@@ -11,14 +11,16 @@ namespace RatingApp.ViewModels
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IRatingService _ratingService;
+        private readonly IDatasetService _datasetService;
 
         [ObservableProperty]
         private List<Database> databases;
 
-        public DatabasesListViewModel(DatabaseContext databaseContext, IRatingService ratingService)
+        public DatabasesListViewModel(DatabaseContext databaseContext, IRatingService ratingService, IDatasetService datasetService)
         {
             _ratingService = ratingService;
             _databaseContext = databaseContext;
+            _datasetService = datasetService;
             LoadDatabasesAsync().SafeFireAndForget();
         }
 
@@ -32,8 +34,8 @@ namespace RatingApp.ViewModels
                 // Загружаем количество источников для каждой БД
                 foreach (var db in Databases)
                 {
-                    var sources = await _databaseContext.GetSourcesByDatabaseIdAsync(db.Id);
-                    db.SourcesCount = sources?.Count ?? 0;
+                    var Datasets = await _databaseContext.GetDatasetsByDatabaseIdAsync(db.Id);
+                    db.DatasetsCount = Datasets?.Count ?? 0;
                 }
                 
                 OnPropertyChanged(nameof(Databases));
@@ -93,7 +95,7 @@ namespace RatingApp.ViewModels
                 }
 
                 // Открываем страницу SQL Shell
-                var sqlShellPage = new SqlShellPage(database);
+                var sqlShellPage = new SqlShellPage(database, _datasetService);
                 await Navigation.PushAsync(sqlShellPage);
             }
             catch (Exception ex)
@@ -143,10 +145,10 @@ namespace RatingApp.ViewModels
                 try
                 {
                     // Удаляем связанные источники сначала
-                    var sources = await _databaseContext.GetSourcesByDatabaseIdAsync(database.Id);
-                    foreach (var source in sources)
+                    var Datasets = await _databaseContext.GetDatasetsByDatabaseIdAsync(database.Id);
+                    foreach (var Dataset in Datasets)
                     {
-                        await _databaseContext.DeleteAsync(source);
+                        await _databaseContext.DeleteAsync(Dataset);
                     }
 
                     // Удаляем саму базу данных

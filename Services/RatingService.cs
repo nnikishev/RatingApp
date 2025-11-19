@@ -122,71 +122,7 @@ namespace RatingApp.Services
             }
         }
 
-        // Методы для работы с Source
-        public async Task<List<Source>> GetSourcesAsync()
-        {
-            try
-            {
-                return await _databaseContext.GetAllAsync<Source>();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"RATING_SERVICE_GET_SOURCES_ERROR: {ex.Message}");
-                return new List<Source>();
-            }
-        }
-
-        public async Task<List<Source>> GetSourcesByDatabaseIdAsync(int databaseId)
-        {
-            try
-            {
-                return await _databaseContext.GetSourcesByDatabaseIdAsync(databaseId);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"RATING_SERVICE_GET_SOURCES_BY_DB_ERROR: {ex.Message}");
-                return new List<Source>();
-            }
-        }
-
-        public async Task<Source?> GetSourceAsync(int id)
-        {
-            try
-            {
-                return await _databaseContext.GetByIdAsync<Source>(id);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"RATING_SERVICE_GET_SOURCE_ERROR: {ex.Message}");
-                return null;
-            }
-        }
-
-        public async Task<int> SaveSourceAsync(Source source)
-        {
-            try
-            {
-                return await _databaseContext.SaveAsync(source);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"RATING_SERVICE_SAVE_SOURCE_ERROR: {ex.Message}");
-                return 0;
-            }
-        }
-
-        public async Task<int> DeleteSourceAsync(Source source)
-        {
-            try
-            {
-                return await _databaseContext.DeleteAsync(source);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"RATING_SERVICE_DELETE_SOURCE_ERROR: {ex.Message}");
-                return 0;
-            }
-        }
+        
 
         // Методы для работы с Chart
         public async Task<List<Chart>> GetChartsAsync()
@@ -202,18 +138,18 @@ namespace RatingApp.Services
             }
         }
 
-        public async Task<List<Chart>> GetChartsBySourceIdAsync(int sourceId)
-        {
-            try
-            {
-                return await _databaseContext.GetChartsBySourceIdAsync(sourceId);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"RATING_SERVICE_GET_CHARTS_BY_SOURCE_ERROR: {ex.Message}");
-                return new List<Chart>();
-            }
-        }
+        // public async Task<List<Chart>> GetChartsBySourceIdAsync(int sourceId)
+        // {
+        //     try
+        //     {
+        //         return await _databaseContext.GetChartsBySourceIdAsync(sourceId);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         System.Diagnostics.Debug.WriteLine($"RATING_SERVICE_GET_CHARTS_BY_SOURCE_ERROR: {ex.Message}");
+        //         return new List<Chart>();
+        //     }
+        // }
 
         public async Task<Chart?> GetChartAsync(int id)
         {
