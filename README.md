@@ -1,6 +1,6 @@
 ﻿# RankingsMobile
 Проба создания приложения работающего с БД. ПРостые представления, формы, карточки, списки
-# Скриншоты
+# Скриншоты работы приложения
 <img width="399" height="864" alt="image" src="https://github.com/user-attachments/assets/f1fb8ee9-a90f-47e4-b87e-1193d7dd8e73" />
 <img width="397" height="855" alt="image" src="https://github.com/user-attachments/assets/f127f5f4-4624-43e3-b173-7fa0c5fedf53" />
 <img width="393" height="825" alt="image" src="https://github.com/user-attachments/assets/a1633479-781d-4a85-837a-98e1ffae46d6" />
@@ -11,6 +11,10 @@
 <img width="393" height="827" alt="image" src="https://github.com/user-attachments/assets/9475b614-057a-4707-9cd7-4d287b7c9e06" />
 <img width="394" height="828" alt="image" src="https://github.com/user-attachments/assets/1e42ed17-2b0f-4100-82ad-4d1e1591d5c7" />
 <img width="395" height="824" alt="image" src="https://github.com/user-attachments/assets/895d862c-5817-4be8-8b07-5313d00f6fcd" />
+<img width="395" height="829" alt="image" src="https://github.com/user-attachments/assets/79f2fe19-558c-41c1-8f84-afff8b795033" />
+<img width="396" height="831" alt="image" src="https://github.com/user-attachments/assets/c211d0e4-bc23-4455-8de9-d9032e788e09" />
+
+
 
 
 
