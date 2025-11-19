@@ -274,6 +274,88 @@ namespace RatingApp.Models
                 return false;
             }
         }
+
+        // specific datasets
+        // Специфические методы для Dataset
+        public async Task<List<Dataset>> GetDatasetsAsync()
+        {
+            try
+            {
+                if (!_isInitialized) return new List<Dataset>();
+
+                return await _database.Table<Dataset>()
+                    .OrderByDescending(d => d.UpdatedAt)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_GET_DATASETS_ERROR: {ex.Message}");
+                return new List<Dataset>();
+            }
+        }
+
+        public async Task<Dataset> GetDatasetAsync(int id)
+        {
+            try
+            {
+                if (!_isInitialized) return null;
+
+                return await _database.Table<Dataset>()
+                    .Where(d => d.Id == id)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_GET_DATASET_ERROR: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<int> SaveDatasetAsync(Dataset dataset)
+        {
+            try
+            {
+                if (!_isInitialized) return 0;
+
+                dataset.UpdatedAt = DateTime.Now;
+                
+                if (dataset.Id != 0)
+                {
+                    var result = await _database.UpdateAsync(dataset);
+                    Debug.WriteLine($"DATABASE_SAVE: Updated Dataset {dataset.Name}");
+                    return result;
+                }
+                else
+                {
+                    dataset.CreatedAt = DateTime.Now;
+                    var result = await _database.InsertAsync(dataset);
+                    Debug.WriteLine($"DATABASE_SAVE: Inserted Dataset {dataset.Name}");
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_SAVE_DATASET_ERROR: {ex.Message}");
+                return 0;
+            }
+        }
+
+        public async Task<int> DeleteDatasetAsync(Dataset dataset)
+        {
+            try
+            {
+                if (!_isInitialized) return 0;
+
+                var result = await _database.DeleteAsync(dataset);
+                Debug.WriteLine($"DATABASE_DELETE: Deleted Dataset {dataset.Name}");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DATABASE_DELETE_DATASET_ERROR: {ex.Message}");
+                return 0;
+            }
+        }
     }
 
     public static class TaskExtensions

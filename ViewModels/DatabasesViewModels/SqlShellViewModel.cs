@@ -41,9 +41,10 @@ namespace RatingApp.ViewModels
         public bool IsNotExecuting => !IsExecuting;
         public string DatabaseName => _database?.Name ?? "Unknown";
 
-        public SqlShellViewModel(Database database)
+        public SqlShellViewModel(Database database, IDatasetService datasetService)
         {
             _database = database;
+            _datasetService = datasetService;
         }
 
         [RelayCommand]

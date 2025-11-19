@@ -1,55 +1,52 @@
 using RatingApp.Models;
-using SQLite;
 
 namespace RatingApp.Services
 {
     public class DatasetService : IDatasetService
     {
-        private SQLiteAsyncConnection _database;
+        private readonly DatabaseContext _databaseContext;
+        private readonly IRatingService _ratingService;
 
-        public DatasetService()
+        public DatasetService(DatabaseContext databaseContext, IRatingService ratingService)
         {
-            _database = DatabaseContext.GetConnection();
-            InitializeAsync().SafeFireAndForget(false);
-        }
-
-        private async Task InitializeAsync()
-        {
-            await _database.CreateTableAsync<Dataset>();
+            _databaseContext = databaseContext;
+            _ratingService = ratingService;
         }
 
         public async Task<List<Dataset>> GetDatasetsAsync()
         {
-            return await _database.Table<Dataset>()
-                .OrderByDescending(d => d.UpdatedAt)
-                .ToListAsync();
+            var datasets = await _databaseContext.GetDatasetsAsync();
+            
+            // Загружаем связанные базы данных
+            foreach (var dataset in datasets)
+            {
+                if (dataset.DatabaseId > 0)
+                {
+                    dataset.Database = await _ratingService.GetDatabaseAsync(dataset.DatabaseId);
+                }
+            }
+            
+            return datasets;
         }
 
         public async Task<Dataset?> GetDatasetAsync(int id)
         {
-            return await _database.Table<Dataset>()
-                .Where(d => d.Id == id)
-                .FirstOrDefaultAsync();
+            var dataset = await _databaseContext.GetDatasetAsync(id);
+            if (dataset != null && dataset.DatabaseId > 0)
+            {
+                dataset.Database = await _ratingService.GetDatabaseAsync(dataset.DatabaseId);
+            }
+            return dataset;
         }
 
         public async Task<int> SaveDatasetAsync(Dataset dataset)
         {
-            dataset.UpdatedAt = DateTime.Now;
-            
-            if (dataset.Id == 0)
-            {
-                dataset.CreatedAt = DateTime.Now;
-                return await _database.InsertAsync(dataset);
-            }
-            else
-            {
-                return await _database.UpdateAsync(dataset);
-            }
+            return await _databaseContext.SaveDatasetAsync(dataset);
         }
 
         public async Task<int> DeleteDatasetAsync(Dataset dataset)
         {
-            return await _database.DeleteAsync(dataset);
+            return await _databaseContext.DeleteDatasetAsync(dataset);
         }
     }
 }

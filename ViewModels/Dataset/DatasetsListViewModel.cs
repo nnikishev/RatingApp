@@ -59,17 +59,17 @@ namespace RatingApp.ViewModels
         [RelayCommand]
         private async Task AddDatasetAsync()
         {
-            var editPage = new DatasetEditPage(_datasetService, _ratingService);
-            await Application.Current.MainPage.Navigation.PushAsync(editPage);
+            return;
+            // var editPage = new DatasetEditPage(_datasetService, _ratingService);
+            // await Application.Current.MainPage.Navigation.PushAsync(editPage);
         }
 
         [RelayCommand]
         private async Task EditDatasetAsync(Dataset dataset)
         {
             if (dataset == null) return;
-            
-            var editPage = new DatasetEditPage(_datasetService, _ratingService, dataset);
-            await Application.Current.MainPage.Navigation.PushAsync(editPage);
+            // var editPage = new DatasetEditPage(_datasetService, _ratingService, dataset);
+            // await Application.Current.MainPage.Navigation.PushAsync(editPage);
         }
 
         [RelayCommand]

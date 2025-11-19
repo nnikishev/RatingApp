@@ -6,10 +6,10 @@ namespace RatingApp.Views
 {
     public partial class LoginPage : ContentPage
     {
-        public LoginPage(IAuthService authService, IRatingService ratingService, DatabaseContext databaseContext)
+        public LoginPage(IAuthService authService, IRatingService ratingService, DatabaseContext databaseContext, IDatasetService datasetService)
         {
             InitializeComponent();
-            BindingContext = new LoginViewModel(authService, ratingService, databaseContext);
+            BindingContext = new LoginViewModel(authService, ratingService, databaseContext, datasetService);
         }
 
         protected override void OnAppearing()

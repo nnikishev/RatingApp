@@ -22,6 +22,7 @@ namespace RatingApp
                 builder.Services.AddSingleton<DatabaseContext>();
                 builder.Services.AddSingleton<IAuthService, AuthService>();
                 builder.Services.AddSingleton<IRatingService, RatingService>();
+                builder.Services.AddSingleton<IDatasetService, DatasetService>();
                 // Register converters if needed
                 builder.Services.AddSingleton<Converters.RatingToColorConverter>();
                 builder.Services.AddSingleton<Converters.EditSaveConverter>();

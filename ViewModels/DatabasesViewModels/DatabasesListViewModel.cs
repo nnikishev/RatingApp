@@ -11,14 +11,16 @@ namespace RatingApp.ViewModels
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IRatingService _ratingService;
+        private readonly IDatasetService _datasetService;
 
         [ObservableProperty]
         private List<Database> databases;
 
-        public DatabasesListViewModel(DatabaseContext databaseContext, IRatingService ratingService)
+        public DatabasesListViewModel(DatabaseContext databaseContext, IRatingService ratingService, IDatasetService datasetService)
         {
             _ratingService = ratingService;
             _databaseContext = databaseContext;
+            _datasetService = datasetService;
             LoadDatabasesAsync().SafeFireAndForget();
         }
 
@@ -93,7 +95,7 @@ namespace RatingApp.ViewModels
                 }
 
                 // Открываем страницу SQL Shell
-                var sqlShellPage = new SqlShellPage(database);
+                var sqlShellPage = new SqlShellPage(database, _datasetService);
                 await Navigation.PushAsync(sqlShellPage);
             }
             catch (Exception ex)

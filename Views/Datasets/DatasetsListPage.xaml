@@ -138,7 +138,7 @@
             AbsoluteLayout.LayoutBounds="1,0,56,56"
             AbsoluteLayout.LayoutFlags="PositionProportional"
             StrokeThickness="0">
-            <Border.StrokeShape>
+            <!-- <Border.StrokeShape>
                 <shapes:RoundRectangle CornerRadius="16" />
             </Border.StrokeShape>
             <Border.Background>
@@ -149,7 +149,7 @@
             </Border.Background>
             <Border.Shadow>
                 <Shadow Brush="#33000000" Offset="0,6" Radius="16" Opacity="0.6" />
-            </Border.Shadow>
+            </Border.Shadow> -->
             <Grid>
                 <ImageButton Source="add.png"
                            Command="{Binding AddDatasetCommand}"
